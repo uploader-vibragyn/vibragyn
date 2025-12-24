@@ -1,0 +1,104 @@
+/* ===== BASE ===== */
+.container {
+  min-height: 100vh;
+  background: #121417; /* mesmo fundo do passo 1 */
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER DO PROCESSO ===== */
+.processHeader {
+  padding: 6px 12px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.processTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.processStep {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+}
+
+/* ===== CONTEÚDO ===== */
+.content {
+  padding: 10px 16px;
+  flex: 1;
+}
+
+/* ===== TÍTULO DA SEÇÃO ===== */
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 8px 0 12px;
+  text-align: center; /* igual ao passo 1 */
+}
+
+/* ===== LISTA DE CARDS ===== */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* compacto */
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #faf9f9;
+  color: #0f172a;
+  padding: 10px; /* menor */
+  border-radius: 14px;
+  cursor: pointer;
+  border: 2px solid transparent;
+
+  display: flex;
+  gap: 14px;
+  align-items: center;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+}
+
+.card:active {
+  transform: scale(0.97);
+}
+
+/* ===== CARD ATIVO ===== */
+.cardSelected {
+  border-color: #22c55e;
+  box-shadow:
+    0 0 0 1px rgba(34, 197, 94, 0.4),
+    0 8px 22px rgba(34, 197, 94, 0.25);
+}
+
+/* ===== ÍCONE ===== */
+.icon {
+  font-size: 22px; /* alinhado ao Visibility */
+  line-height: 1;
+}
+
+/* ===== TEXTO ===== */
+.textGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.cardDescription {
+  font-size: 12px;
+  line-height: 1.3;
+  color: #475569;
+}

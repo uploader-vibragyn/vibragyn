@@ -1,0 +1,152 @@
+/* ====== PAGE WRAPPER ====== */
+.page {
+  min-height: 100vh;
+  padding: 24px 16px 64px;
+  background: radial-gradient(
+    1200px 600px at top,
+    #0f172a,
+    #020617
+  );
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+}
+
+/* ====== HEADER ====== */
+.header {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+
+/* Back link */
+.backLink {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+/* Event title */
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+/* Single badge */
+.badgePrivate {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* ====== CARD ====== */
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  color: #0f172a;
+}
+
+/* Invite box */
+.inviteBox {
+  background: linear-gradient(180deg, #111827, #020617);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.inviteTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.inviteDesc {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 10px;
+}
+
+/* Copy button only (NO URL SHOWN) */
+.copyButton {
+  width: 100%;
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  color: #020617;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  background: #e5e7eb;
+}
+
+/* ====== RSVP SECTIONS ====== */
+.section {
+  margin-top: 14px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Guest pill */
+.guestItem {
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #020617;
+}
+
+/* Empty state */
+.empty {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ====== STATUS COLORS ====== */
+.going {
+  color: #16a34a;
+}
+
+.maybe {
+  color: #ca8a04;
+}
+
+.notGoing {
+  color: #dc2626;
+}

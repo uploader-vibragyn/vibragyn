@@ -1,0 +1,803 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #05060a;
+  color: #f9fafb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", sans-serif;
+}
+
+/* ÁREA SCROLLÁVEL (conteúdo todo menos a barra fixa) */
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* LOADING / SKELETON */
+.loading {
+  padding: 16px;
+}
+
+.loadingSkeleton {
+  width: 100%;
+  height: 220px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1f2933, #111827);
+  margin-bottom: 16px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loadingLine {
+  height: 14px;
+  width: 70%;
+  border-radius: 999px;
+  background: #111827;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loadingLineShort {
+  height: 12px;
+  width: 40%;
+  border-radius: 999px;
+  background: #111827;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.notFound {
+  padding: 24px 16px;
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* HERO / CAPA */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #4f46e5, #020617 55%);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05);
+  transform: scale(1.02);
+}
+
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 0% 0%, #6366f1, #a855f7, #0f172a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.coverEmoji {
+  font-size: 32px;
+}
+
+.coverText {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #e5e7eb;
+}
+
+/* SOBREPOSIÇÃO */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 16px 14px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72),
+    rgba(0, 0, 0, 0.35),
+    transparent
+  );
+}
+
+.chipCategory {
+  padding: 4px 10px;
+  height: 24px;             /* 🔴 chave */
+  display: inline-flex;     /* 🔴 chave */
+  align-items: center;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  border-radius: 999px;
+
+  background: rgba(99, 102, 241, 0.14);
+  color: #c7d2fe;
+
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  text-transform: uppercase; 
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+
+.chipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  flex-wrap: wrap;          /* permite quebrar linha */
+  max-width: 100%;
+}
+
+
+.chip,
+.chipPrimary,
+.chipPrice {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(249, 250, 251, 0.12);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  color: #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.chipPrimary {
+  border-color: rgba(251, 191, 36, 0.9);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.25),
+    rgba(251, 191, 36, 0.15)
+  );
+}
+
+.chipPrice {
+  border-color: rgba(52, 211, 153, 0.9);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.3),
+    rgba(5, 150, 105, 0.25)
+  );
+  color: #ecfdf5;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f9fafb;
+  text-shadow: 0 14px 45px rgba(0, 0, 0, 0.75);
+  line-height: 1.2;
+}
+
+/* SEÇÕES */
+.section {
+  padding: 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeInUp 0.5s ease-out;
+  animation-delay: 0.05s;
+  animation-fill-mode: both;
+}
+
+.infoCard,
+.organizerCard {
+  background: radial-gradient(circle at top left, #0b1220, #020617);
+  border-radius: 18px;
+  padding: 12px 13px 11px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.7);
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.locationRow {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.placeholderText {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.description {
+  font-size: 14px;
+  color: #e5e7eb;
+  line-height: 1.5;
+}
+
+/* ORGANIZADOR */
+.organizerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.organizerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 0% 0%, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: #f9fafb;
+}
+
+.organizerName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #f9fafb;
+}
+
+.organizerHint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ESPAÇO PARA BARRA INFERIOR */
+.bottomSpacer {
+  height: 80px; /* espaço para não ficar escondido atrás da bottomBar */
+}
+
+/* BARRA INFERIOR FIXA */
+.bottomBar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 6px);
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 0.98),
+    rgba(2, 6, 23, 0.95),
+    rgba(2, 6, 23, 0.85),
+    transparent
+  );
+  border-top: 1px solid rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  z-index: 20;
+}
+
+.bottomBarMain {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* Botões – usando className passada para Button */
+.primaryAction {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.secondaryAction {
+  min-width: 110px;
+  font-size: 13px;
+}
+
+/* ANIMAÇÕES */
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* RSVP STATES */
+.activeGoing {
+  background: linear-gradient(135deg, #22c55e, #15803d) !important;
+  color: #ffffff !important;
+}
+
+.activeMaybe {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  color: #ffffff !important;
+}
+
+.activeNo {
+  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+  color: #ffffff !important;
+}
+
+/* RESPONSIVO BÁSICO (quando abrir em telas maiores) */
+@media (min-width: 640px) {
+  .page {
+    background: radial-gradient(circle at top, #020617, #020617 28%, #020617);
+  }
+
+  .hero {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .section {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .bottomBarMain {
+    max-width: 640px;
+  }
+}
+
+/* ============================================= */
+/* QUEM VAI — PARTIFUL STYLE */
+/* ============================================= */
+
+.attendanceCard {
+  background: radial-gradient(circle at top left, #0b1220, #020617);
+  border-radius: 18px;
+  padding: 14px 14px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.6);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.attendanceCounters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f9fafb;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+  transform: translateY(0);
+  transition: transform 0.15s ease-out;
+}
+
+.avatar:active {
+  transform: scale(0.92);
+}
+
+.moreAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+/* ========================= */
+/* FEED DO EVENTO            */
+/* ========================= */
+
+.feedBlock {
+  margin-top: 8px;
+  padding: 14px;
+  background: radial-gradient(circle at top left, #0b1220, #020617);
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.6);
+}
+
+.composerBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.composerInput {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  padding: 10px;
+  background: #0f172a;
+  color: #f9fafb;
+  font-size: 14px;
+  resize: none;
+}
+
+.composerPreview {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.composerActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.composerButton {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.composerSubmit {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  padding: 6px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.postCard {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.postAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.postAvatarFallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #475569;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.postName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.postDate {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.postText {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+/* ========================= */
+/* POST IMAGE — HIERARQUIA   */
+/* ========================= */
+
+.postImage {
+  display: block;
+  width: 80%;
+  max-width: 280px;
+  max-height: 160px;
+  object-fit: cover;
+  margin: 10px auto 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* ========================= */
+/* FEED DO EVENTO (EXTRA)    */
+/* ========================= */
+
+.composerButtonDisabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Comentários */
+
+.commentsContainer {
+  margin-top: 8px;
+}
+
+.commentsToggle {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 0;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.commentComposer {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.commentInput {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+.commentSend {
+  background: #6366f1;
+  color: white;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.commentItem {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.commentAvatar,
+.commentAvatarFallback {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #475569;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.commentBody {
+  flex: 1;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.commentName {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.commentDate {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.commentText {
+  font-size: 12px;
+  color: #d1d5db;
+  margin-top: 2px;
+}
+
+.commentImage {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+
+.commentActions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.commentApprove {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #022c22;
+}
+
+.commentDelete {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fee2e2;
+}
+
+/* Likes + admin actions */
+
+.postFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.likeButton {
+  border: none;
+  background: none;
+  color: #e5e7eb;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.likeButtonActive {
+  color: #f97316;
+}
+
+.postAdminActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.postApprove {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #052e16;
+}
+
+.postDelete {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fee2e2;
+}
+
+.postPendingBadge {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #422006;
+}
+/* ========================= */
+/* RSVP — BLOCO PRINCIPAL   */
+/* ========================= */
+
+.rsvpCard {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.9),
+    rgba(2, 6, 23, 0.95)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rsvpPrimary {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 0;
+}
+
+.rsvpSecondaryRow {
+  display: flex;
+  gap: 8px;
+}
+
+.rsvpSecondary {
+  flex: 1;
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.rsvpButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.rsvpButton {
+  flex: 1;
+  height: 36px;                 /* ↓ mais fino */
+  padding: 0 10px;
+
+  border-radius: 10px;
+  font-size: 13px;              /* ↓ mais elegante */
+  font-weight: 500;
+
+  background: rgba(255,255,255,0.06);
+  color: #e5e7eb;
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.rsvpButtonActive {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.22);
+  color: #fff;
+}
+.shareButton {
+  height: 34px;
+  padding: 0 14px;
+
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+
+  background: rgba(255,255,255,0.08);
+  color: #e5e7eb;
+
+  border: 1px solid rgba(255,255,255,0.12);
+}
+

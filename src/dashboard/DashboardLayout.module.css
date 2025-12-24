@@ -1,0 +1,96 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0f1a;
+}
+
+/* TOP BAR FIXA */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: #0b0f1a;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.menuButton {
+  border: none;
+  background: none;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+/* SIDE MENU */
+.sideMenu {
+  position: fixed;
+  top: 44px;
+  left: -180px;
+  height: calc(100% - 44px);
+  width: 160px;
+  background: rgba(15, 18, 30, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: left 0.25s ease;
+}
+
+.open {
+  left: 0;
+}
+
+.menuItem {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  text-align: left;
+  padding: 8px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.logout {
+  background: none;
+  border: none;
+  color: #ff5a5a;
+  font-weight: 700;
+  padding: 8px 6px;
+  cursor: pointer;
+}
+
+/* SCROLL SÓ AQUI */
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
