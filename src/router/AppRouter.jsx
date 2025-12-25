@@ -12,7 +12,7 @@ import VisibilitySelect from "../pages/Create/VisibilitySelect";
 import FormatSelect from "../pages/Create/FormatSelect";
 import PaymentSelect from "../pages/Create/PaymentSelect";
 import EventCreateForm from "../pages/Create/EventCreateForm";
-import ReviewEvent from "../pages/Create/ReviewEvent"; // ✅ ADICIONADO
+import ReviewEvent from "../pages/Create/ReviewEvent";
 
 /* ADMIN */
 import AdminReviewPage from "../pages/Admin/AdminReviewPage";
@@ -28,45 +28,57 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
 
-        {/* TODA ÁREA LOGADA COM NAVBAR */}
-        <Route
-          element={
-            <RequireAuth>
-              <DashboardLayout />
-            </RequireAuth>
-          }
-        >
-          <Route path="/" element={<HomePage />} />
-          <Route path="/feed" element={<HomePage />} />
+        {/* 🔓 PÚBLICAS */}
+        {/* 🔓 PÚBLICAS */}
+<Route path="/login" element={<Login />} />
+<Route path="/" element={<HomePage />} />
+<Route path="/event/:id" element={<EventDetailsPage />} />
 
-          {/* CREATE EVENT FLOW */}
-          <Route path="/create/visibility" element={<VisibilitySelect />} />
-          <Route path="/create/format" element={<FormatSelect />} />
-          <Route path="/create/payment" element={<PaymentSelect />} />
-          <Route path="/create/form" element={<EventCreateForm />} />
-          <Route path="/create/review" element={<ReviewEvent />} /> {/* ✅ ADICIONADO */}
+{/* 🔐 ÁREA LOGADA (COM NAVBAR) */}
+<Route
+  element={
+    <RequireAuth>
+      <DashboardLayout />
+    </RequireAuth>
+  }
+>
+  {/* AGENDA */}
+  <Route path="/feed" element={<HomePage />} />
 
-          <Route path="/profile" element={<ProfilePage />} />
+  {/* PERFIL */}
+  <Route path="/profile" element={<ProfilePage />} />
 
-          {/* EVENT DETAILS */}
-          <Route path="/event/:id" element={<EventDetailsPage />} />
+  {/* CREATE EVENT */}
+  <Route path="/create/visibility" element={<VisibilitySelect />} />
+  <Route path="/create/format" element={<FormatSelect />} />
+  <Route path="/create/payment" element={<PaymentSelect />} />
+  <Route path="/create/form" element={<EventCreateForm />} />
+  <Route path="/create/review" element={<ReviewEvent />} />
 
-          {/* DASHBOARD */}
-          <Route path="/dashboard">
-            <Route index element={<OverviewPage />} />
-            <Route path="event/:id" element={<DashboardEventPage />}>
-              <Route index element={<EventOverviewPage />} />
-              <Route path="guests" element={<EventGuestsPage />} />
-            </Route>
-          </Route>
-        </Route>
+  {/* DASHBOARD */}
+  <Route path="/dashboard">
+    <Route index element={<OverviewPage />} />
+    <Route path="event/:id" element={<DashboardEventPage />}>
+      <Route index element={<EventOverviewPage />} />
+      <Route path="guests" element={<EventGuestsPage />} />
+    </Route>
+  </Route>
+</Route>
 
-        {/* ADMIN */}
-        <Route path="/admin/review" element={<AdminReviewPage />} />
+{/* 🔐 ADMIN */}
+<Route
+  path="/admin/review"
+  element={
+    <RequireAuth>
+      <AdminReviewPage />
+    </RequireAuth>
+  }
+/>
 
-        <Route path="*" element={<Login />} />
+{/* 🧯 FALLBACK */}
+<Route path="*" element={<HomePage />} />
+
       </Routes>
     </BrowserRouter>
   );
