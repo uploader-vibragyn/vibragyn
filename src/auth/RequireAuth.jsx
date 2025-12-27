@@ -1,19 +1,14 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "./useAuth";
 
-export default function RequireAuth({ children }) {
-  const { user, isLoading } = useAuth();
-  const location = useLocation();
+export default function RequireAuth() {
+  const { isLoading } = useAuth();
 
-  // 🔒 Enquanto carrega, NÃO decide nada e NÃO desmonta
-  if (isLoading) {
-    return children;
-  }
+  if (isLoading) return null;
 
-  // 🔒 Depois de carregar, decide auth
-  if (!user) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
+  // ❌ NÃO REDIRECIONA
+  // ❌ NÃO MANDA PRA /login
+  // ❌ NÃO MANDA PRA /
 
-  return children;
+  return <Outlet />;
 }

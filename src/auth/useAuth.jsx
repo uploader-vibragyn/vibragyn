@@ -1,94 +1,71 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
-import {
-  ensureUserProfile,
-  loginWithEmail,
-  loginWithGoogle,
-  loginWithApple,
-  logoutUser,
-} from "./authActions";
 
-const AuthContext = createContext({
-  user: null,
-  isLoading: true,
-  loginWithEmail: () => {},
-  loginWithGoogle: () => {},
-  loginWithApple: () => {},
-  logoutUser: () => {},
-});
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let ignore = false;
+    // 1️⃣ BUSCA SESSÃO INICIAL
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
 
-    async function loadSession() {
-      const { data } = await supabase.auth.getSession();
-      const current = data?.session?.user ?? null;
-
-if (current) {
-  setUser(current);
-}
-setIsLoading(false);
-
-
-      if (current) ensureUserProfile(current);
-    }
-
-    loadSession();
-
+    // 2️⃣ LISTENER DE AUTH (SEM NAVEGAÇÃO!)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      const nextUser = session?.user ?? null;
-
-if (nextUser) {
-  setUser(nextUser);
-}
-
-
-      if (nextUser) ensureUserProfile(nextUser);
+      setUser(session?.user ?? null);
     });
 
-    return () => {
-      ignore = true;
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
-  async function handleEmailLogin(email, password) {
-    const { user } = await loginWithEmail(email, password);
-    if (user) setUser(user);
-    return user;
+  // 🔐 AÇÕES DE AUTH (NÃO NAVEGAM)
+  async function signIn(email, password) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
   }
 
-  async function handleGoogleLogin() {
-    const { user } = await loginWithGoogle();
-    return user;
+  async function signUp(email, password) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) throw error;
   }
 
-  async function handleAppleLogin() {
-    const { user } = await loginWithApple();
-    return user;
+  async function signInWithGoogle() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    if (error) throw error;
   }
 
-  async function handleLogout() {
-    await logoutUser();
-    setUser(null);
+  async function logout() {
+    await supabase.auth.signOut();
   }
 
-  const value = {
-    user,
-    isLoading,
-    loginWithEmail: handleEmailLogin,
-    loginWithGoogle: handleGoogleLogin,
-    loginWithApple: handleAppleLogin,
-    logoutUser: handleLogout,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        signIn,
+        signUp,
+        signInWithGoogle,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

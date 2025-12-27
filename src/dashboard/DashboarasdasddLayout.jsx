@@ -9,18 +9,11 @@ export default function DashboardLayout() {
   const { loading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  if (loading) {
-  return (
-    <div className={styles.wrapper}>
-      <main className={styles.content} />
-    </div>
-  );
-}
-
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    navigate("/logoff");
+    navigate("/", { replace: true });
+
   }
 
   const go = (path) => {

@@ -1,19 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase/client";
 import { useAuth } from "../../auth/useAuth";
 import "./overview.css";
 
 export default function OverviewPage() {
   const { user } = useAuth();
-  const [stats, setStats] = useState(null);
+  const navigate = useNavigate();
+
+  const [stats, setStats] = useState({
+    eventsCount: 0,
+    ticketsCount: 0,
+    rsvpsCount: 0,
+    checkinsCount: 0,
+  });
   const [eventsWithMetrics, setEventsWithMetrics] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadOverview() {
-      if (!user) return;
+  const creatorId = useMemo(() => user?.id ?? null, [user]);
 
-      const creatorId = user.id;
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadOverview() {
+      if (!creatorId) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
 
       const { data: events, error: eventsError } = await supabase
         .from("events")
@@ -21,13 +36,15 @@ export default function OverviewPage() {
         .eq("creator_id", creatorId)
         .order("event_date", { ascending: true });
 
+      if (cancelled) return;
+
       if (eventsError) {
         console.error("Erro carregando eventos:", eventsError);
         setLoading(false);
         return;
       }
 
-      const eventIds = events.map((e) => e.id);
+      const eventIds = (events ?? []).map((e) => e.id);
 
       if (eventIds.length === 0) {
         setStats({
@@ -36,7 +53,6 @@ export default function OverviewPage() {
           rsvpsCount: 0,
           checkinsCount: 0,
         });
-
         setEventsWithMetrics([]);
         setLoading(false);
         return;
@@ -63,6 +79,8 @@ export default function OverviewPage() {
           .in("event_id", eventIds),
       ]);
 
+      if (cancelled) return;
+
       setStats({
         eventsCount: events.length,
         ticketsCount: ticketsCount ?? 0,
@@ -70,45 +88,58 @@ export default function OverviewPage() {
         checkinsCount: checkinsCount ?? 0,
       });
 
-      const eventsMetrics = [];
+      // métricas por evento
+      const eventsMetrics = await Promise.all(
+        events.map(async (ev) => {
+          const [tRes, rRes, cRes] = await Promise.all([
+            supabase
+              .from("tickets")
+              .select("*", { count: "exact", head: true })
+              .eq("event_id", ev.id),
 
-      for (const ev of events) {
-        const [tRes, rRes, cRes] = await Promise.all([
-          supabase
-            .from("tickets")
-            .select("*", { count: "exact", head: true })
-            .eq("event_id", ev.id),
+            supabase
+              .from("rsvps")
+              .select("*", { count: "exact", head: true })
+              .eq("event_id", ev.id),
 
-          supabase
-            .from("rsvps")
-            .select("*", { count: "exact", head: true })
-            .eq("event_id", ev.id),
+            supabase
+              .from("checkins")
+              .select("*", { count: "exact", head: true })
+              .eq("event_id", ev.id),
+          ]);
 
-          supabase
-            .from("checkins")
-            .select("*", { count: "exact", head: true })
-            .eq("event_id", ev.id),
-        ]);
+          return {
+            ...ev,
+            ticketsCount: tRes.count ?? 0,
+            rsvpsCount: rRes.count ?? 0,
+            checkinsCount: cRes.count ?? 0,
+          };
+        })
+      );
 
-        eventsMetrics.push({
-          ...ev,
-          ticketsCount: tRes.count ?? 0,
-          rsvpsCount: rRes.count ?? 0,
-          checkinsCount: cRes.count ?? 0,
-        });
-      }
+      if (cancelled) return;
 
       setEventsWithMetrics(eventsMetrics);
       setLoading(false);
     }
 
     loadOverview();
-  }, [user]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [creatorId]);
+
+  if (!user) return null;
 
   if (loading) {
-  return null;
-}
-
+    return (
+      <div className="overview-wrapper">
+        <h2 className="overview-title">Visão Geral</h2>
+        <p className="no-events">Carregando…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="overview-wrapper">
@@ -129,7 +160,12 @@ export default function OverviewPage() {
         )}
 
         {eventsWithMetrics.map((ev) => (
-          <EventPerformanceCard key={ev.id} event={ev} />
+          <EventPerformanceCard
+            key={ev.id}
+            event={ev}
+            onManage={() => navigate(`/dashboard/event/${ev.id}`)}  // ✅ rota provável correta
+            onEdit={() => navigate(`/create/form?edit=${ev.id}`)}
+          />
         ))}
       </section>
     </div>
@@ -145,7 +181,7 @@ function StatCard({ label, value }) {
   );
 }
 
-function EventPerformanceCard({ event }) {
+function EventPerformanceCard({ event, onManage, onEdit }) {
   const date = event.event_date
     ? new Date(event.event_date).toLocaleDateString("pt-BR")
     : "Sem data";
@@ -153,11 +189,7 @@ function EventPerformanceCard({ event }) {
   return (
     <div className="event-card">
       {event.image_url && (
-        <img
-          src={event.image_url}
-          className="event-cover"
-          alt="capa do evento"
-        />
+        <img src={event.image_url} className="event-cover" alt="capa do evento" />
       )}
 
       <div className="event-header">
@@ -180,28 +212,17 @@ function EventPerformanceCard({ event }) {
       </div>
 
       <div className="event-actions-row">
-       <button
-          type="button"
-          className="event-action-btn"
-          onClick={() => {
-            window.location.href = `/dashboard/event/${event.id}`;
-          }}
-        >
+        <button type="button" className="event-action-btn" onClick={onManage}>
           Gerenciar evento
         </button>
-
 
         <button
           type="button"
           className="event-action-btn secondary"
-          onClick={() => {
-            window.location.href = `/create/form?edit=${event.id}`;
-          }}
+          onClick={onEdit}
         >
           Editar
         </button>
-
-        
       </div>
     </div>
   );

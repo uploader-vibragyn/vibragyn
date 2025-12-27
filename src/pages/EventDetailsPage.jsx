@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import {
@@ -17,14 +18,23 @@ import styles from "./EventDetailsPage.module.css";
 import EventPostFeed from "../components/EventPostFeed";
 import Button from "../components/ui/Button";
 import { useToast } from "../hooks/useToast";
+import { useAuth } from "../auth/useAuth";
+import PublicTopBar from "../components/PublicTopBar";
+
+
 
 export default function EventDetailsPage() {
   
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user, isLoading } = useAuth();
+
 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [forbidden, setForbidden] = useState(false);
+  const [accessChecked, setAccessChecked] = useState(false);
+
   const [error, setError] = useState(false);
 
   const [rsvpStatus, setRsvpStatus] = useState(null);
@@ -53,38 +63,35 @@ export default function EventDetailsPage() {
     }
   }
 
-  useEffect(() => {
-    async function loadEvent() {
-      try {
-        setLoading(true);
+ useEffect(() => {
+  async function loadEvent() {
+    try {
+      setLoading(true);
 
-        const storageKey = `invited_event_${id}`;
-        const allowed = await canUserAccessEvent(id);
+      // 1️⃣ BUSCA O EVENTO (UMA ÚNICA VEZ)
+      const { data } = await getEventById(id);
+      setEvent(data);
 
-        if (!allowed && localStorage.getItem(storageKey) !== "true") {
-          setForbidden(true);
-          return;
-        }
-
-        const { data } = await getEventById(id);
-        setEvent(data);
-
+      // 2️⃣ SE USUÁRIO LOGADO, BUSCA RSVP + PRESENÇAS
+      if (user) {
         const rsvp = await getUserRsvp(id);
         if (rsvp?.data?.status) {
           setRsvpStatus(rsvp.data.status);
         }
 
         await loadAttendance(id);
-      } catch (e) {
-        console.error(e);
-        setError(true);
-      } finally {
-        setLoading(false);
       }
-    }
 
-    loadEvent();
-  }, [id]);
+    } catch (err) {
+      console.error("Erro ao carregar evento:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  loadEvent();
+}, [id, user]);
+
 
   // -----------------------
   // ESTADOS DE BLOQUEIO
@@ -102,30 +109,58 @@ export default function EventDetailsPage() {
     );
   }
 
-  if (forbidden) {
-    const storageKey = `invited_event_${id}`;
+  if (forbidden && !acceptedInvite) {
 
+  const storageKey = `invited_event_${id}`;
+
+  // 🔹 USUÁRIO NÃO LOGADO
+  if (!user) {
     return (
       <div className={styles.notFound}>
         <h2>🔒 Evento privado</h2>
-        <p>Você recebeu um convite para este evento.</p>
+        <p>
+          Este evento é privado.
+          <br />
+          Para acessar, entre ou crie uma conta no VibraGyn.
+        </p>
 
         <button
           className={styles.primaryButton}
           onClick={() => {
-            localStorage.setItem(storageKey, "true");
-            window.location.reload();
-          }}
+  localStorage.setItem(
+    "postLoginRedirect",
+    window.location.pathname
+  );
+  navigate("/login");
+}}
+
         >
-          Entrar no evento
+          Entrar para acessar
         </button>
       </div>
     );
   }
 
-  if (error || !event) {
-    return <p className={styles.notFound}>Evento não encontrado.</p>;
-  }
+  // 🔹 USUÁRIO LOGADO (fluxo que já existia)
+  return (
+    <div className={styles.notFound}>
+      <h2>🔒 Evento privado</h2>
+      <p>Você recebeu um convite para este evento.</p>
+
+      <button
+  className={styles.primaryButton}
+  onClick={() => {
+    localStorage.setItem(storageKey, "true");
+    setAcceptedInvite(true);
+  }}
+>
+  Entrar no evento
+</button>
+
+    </div>
+  );
+}
+
 
   // -----------------------
   // DADOS DERIVADOS
@@ -195,6 +230,10 @@ export default function EventDetailsPage() {
   // -----------------------
 
   async function updateRsvp(newStatus) {
+    if (!user) {
+  showToast("Entre ou crie uma conta para confirmar presença 🔒");
+  return;
+  }
     if (rsvpLoading) return;
     setRsvpLoading(true);
 
@@ -243,6 +282,8 @@ export default function EventDetailsPage() {
   return (
     <div className={styles.page}>
       <div className={styles.scrollArea}>
+    {!user && <PublicTopBar />}
+
         {/* CAPA */}
         <div className={styles.hero}>
           {hasImage ? (
@@ -284,40 +325,65 @@ export default function EventDetailsPage() {
 
         </div>
 
-        {/* RSVP — CTA PRINCIPAL */}
-        <div className={styles.rsvpCard}>
-          <Button
-            onClick={() => updateRsvp("going")}
-            disabled={rsvpLoading}
-            className={`${styles.rsvpPrimary} ${
-              rsvpStatus === "going" ? styles.activeGoing : ""
-            }`}
-          >
-            Eu vou 🔥
-          </Button>
+       {/* RSVP — CTA PRINCIPAL */}
+{event?.is_private && !user ? (
+  <div className={styles.inviteGateCard}>
+    <h3>Você foi convidado para este evento</h3>
 
-          <div className={styles.rsvpSecondaryRow}>
-            <Button
-              onClick={() => updateRsvp("maybe")}
-              disabled={rsvpLoading}
-              className={`${styles.rsvpSecondary} ${
-                rsvpStatus === "maybe" ? styles.activeMaybe : ""
-              }`}
-            >
-              Talvez ⭐
-            </Button>
+    <p>
+      Para confirmar presença, comentar ou interagir,
+      é necessário entrar ou criar uma conta.
+    </p>
 
-            <Button
-              onClick={() => updateRsvp("no")}
-              disabled={rsvpLoading}
-              className={`${styles.rsvpSecondary} ${
-                rsvpStatus === "no" ? styles.activeNo : ""
-              }`}
-            >
-              Não ❌
-            </Button>
-          </div>
-        </div>
+    <button
+      className={styles.primaryButton}
+      onClick={() => {
+        localStorage.setItem(
+          "postLoginRedirect",
+          window.location.pathname + window.location.search
+        );
+        navigate("/login");
+      }}
+    >
+      Entrar para responder
+    </button>
+  </div>
+) : (
+  <div className={styles.rsvpCard}>
+    <Button
+      onClick={() => updateRsvp("going")}
+      disabled={rsvpLoading}
+      className={`${styles.rsvpPrimary} ${
+        rsvpStatus === "going" ? styles.activeGoing : ""
+      }`}
+    >
+      Eu vou 🔥
+    </Button>
+
+    <div className={styles.rsvpSecondaryRow}>
+      <Button
+        onClick={() => updateRsvp("maybe")}
+        disabled={rsvpLoading}
+        className={`${styles.rsvpSecondary} ${
+          rsvpStatus === "maybe" ? styles.activeMaybe : ""
+        }`}
+      >
+        Talvez ⭐
+      </Button>
+
+      <Button
+        onClick={() => updateRsvp("no")}
+        disabled={rsvpLoading}
+        className={`${styles.rsvpSecondary} ${
+          rsvpStatus === "no" ? styles.activeNo : ""
+        }`}
+      >
+        Não ❌
+      </Button>
+    </div>
+  </div>
+)}
+
 
         {/* INFO */}
         <section className={styles.section}>

@@ -9,17 +9,29 @@
 
 html,
 body {
-  height: 100%;
-}
+  font-family:
+    "SF Pro Text",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    sans-serif;
 
-body {
-  margin: 0;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
-    "Noto Sans", "Liberation Sans", sans-serif;
+  font-weight: 520;
+  letter-spacing: -0.018em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
-  color: #111827;
+}
+
+/* títulos herdam a mesma fonte, só com mais peso */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 650;
+  letter-spacing: -0.022em;
 }
 
 a {
@@ -34,8 +46,6 @@ img {
 
 /* =========================
    APP SHELL (mobile-first)
-   - centraliza no desktop
-   - mantém "tela" consistente
    ========================= */
 :root {
   --app-max: 520px;
@@ -51,7 +61,7 @@ img {
   min-height: 100%;
 }
 
-/* Use esta classe no layout (DashboardLayout) */
+/* layout */
 .app-shell {
   min-height: 100vh;
   background: var(--bg);
@@ -62,11 +72,10 @@ img {
   flex-direction: column;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
-
-  overflow: hidden;   /* ← CRÍTICO */
+  overflow: hidden;
 }
 
-/* Top navbar: fixa no topo */
+/* Top navbar */
 .app-topbar {
   position: sticky;
   top: 0;
@@ -80,7 +89,8 @@ img {
    ========================= */
 .page-title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 8px 0 12px;
 }
 
@@ -94,4 +104,5 @@ img {
 
 .muted {
   color: var(--muted);
+  font-weight: 500;
 }
