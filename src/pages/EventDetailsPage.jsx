@@ -19,7 +19,6 @@ import EventPostFeed from "../components/EventPostFeed";
 import Button from "../components/ui/Button";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../auth/useAuth";
-import PublicTopBar from "../components/PublicTopBar";
 
 
 
@@ -282,7 +281,6 @@ export default function EventDetailsPage() {
   return (
     <div className={styles.page}>
       <div className={styles.scrollArea}>
-    {!user && <PublicTopBar />}
 
         {/* CAPA */}
         <div className={styles.hero}>

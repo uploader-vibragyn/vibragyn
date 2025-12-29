@@ -65,6 +65,16 @@
   background: transparent;
   outline: none;
   font-size: 16px;
+  color: #0f172a;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.select {
+  background: #fff;
 }
 
 .textarea {
