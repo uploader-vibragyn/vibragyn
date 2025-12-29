@@ -26,6 +26,14 @@ export default function AuthCallback() {
 
         await ensureUserProfile(user);
 
+        const redirect = localStorage.getItem("postLoginRedirect");
+
+        if (redirect) {
+          localStorage.removeItem("postLoginRedirect");
+          navigate(redirect, { replace: true });
+          return;
+        }
+
         navigate("/", { replace: true });
       } catch (err) {
         navigate("/login", { replace: true });
