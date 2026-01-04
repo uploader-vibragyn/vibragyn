@@ -153,7 +153,7 @@ export default function EventPostComposer({
             ? "Post enviado ✅"
             : isPrivate || isOrganizer
             ? "Postar"
-            : "Enviar para aprovação"}
+            : "Postar Comentário"}
         </button>
 
       </div>

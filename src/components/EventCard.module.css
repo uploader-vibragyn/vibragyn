@@ -1,162 +1,92 @@
 .card {
-  background: #1a1f2e; /* Tom de azul marinho profundo */
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.7); /* Efeito vidro */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 28px; /* Bordas bem arredondadas */
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255, 182, 193, 0.3); /* Borda rosa sutil */
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 10px 25px rgba(219, 112, 147, 0.08);
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.15);
+.card:active {
+  transform: scale(0.97);
 }
 
 .imageWrapper {
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: #000;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.card:hover .image {
-  transform: scale(1.05);
 }
 
 .content {
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-
-/* Container das tags */
 .tagsRow {
   display: flex;
-  gap: 4px; /* Reduzi o espaço entre elas */
-  margin-bottom: 6px;
   flex-wrap: wrap;
+  gap: 6px;
 }
 
-/* A tag em si (reduzida) */
 .tag {
-  font-size: 8px; /* Era 11px, reduzido para escala mini */
-  font-weight: 800; /* Aumentei o peso para manter a leitura mesmo pequena */
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  padding: 2px 6px; /* Reduzi drasticamente o preenchimento */
-  border-radius: 4px; /* Arredondamento mais sutil para combinar com o tamanho */
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
-  letter-spacing: 0.3px;
-  line-height: 1; /* Garante que não sobre espaço vertical */
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-/* Ajuste das cores específicas para o novo tamanho */
-.tagPaid {
-  background: rgba(99, 102, 241, 0.25);
-  color: #a5b4fc;
-}
-
-.tagFree {
-  background: rgba(34, 197, 94, 0.2);
-  color: #86efac;
+  padding: 4px 10px;
+  border-radius: 50px;
+  background: rgba(255, 105, 180, 0.1);
+  color: #FF69B4;
 }
 
 .tagCategory {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #fff !important;
-  border: 0.5px solid rgba(255, 255, 255, 0.2); /* Borda mais fina */
+  background: #7B61FF;
+  color: #ffffff;
+}
+
+.tagPaid {
+  background: rgba(255, 20, 147, 0.1);
+  color: #FF1493;
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 19px;
+  font-weight: 800;
+  color: #1F2937; /* Cinza quase preto para elegância */
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .infoGroup {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-}
-
-.date {
-  font-size: 13px;
-  color: #60a5fa; /* Azul vibrante para a data */
-  font-weight: 500;
-  margin: 0;
-}
-
-.location {
-  font-size: 13px;
-  color: #94a3b8;
-  margin: 0;
-}
-
-.footer {
-  margin-top: 8px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.organizer {
-  font-size: 12px;
-  color: #64748b;
-  margin: 0;
-}
-
-.organizer span {
-  color: #cbd5e1;
-  font-weight: 600;
-}
-
-/* Mantenha o que você já tem e adicione/ajuste estas classes */
-
-.tagCategory {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  gap: 4px;
 }
 
 .date {
   font-size: 14px;
-  color: #60a5fa;
-  font-weight: 600;
-  margin: 4px 0;
-  text-transform: capitalize;
+  color: #FF1493; /* Rosa vibrante para destaque */
+  font-weight: 700;
+  margin: 0;
 }
 
 .location {
   font-size: 13px;
-  color: #94a3b8;
+  color: #6B7280;
+  font-weight: 500;
   margin: 0;
-}
-
-.location strong {
-  color: #cbd5e1; /* Cor para o texto "Local:" */
-}
-
-.title {
-  font-size: 19px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 8px 0;
-  line-height: 1.2;
 }

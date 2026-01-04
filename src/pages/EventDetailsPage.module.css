@@ -1,522 +1,300 @@
+/* =========================
+   BASE / PÁGINA
+========================= */
+
 .page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: #05060a;
-  color: #f9fafb;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Inter", sans-serif;
+  background: #fff5f8;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ÁREA SCROLLÁVEL (conteúdo todo menos a barra fixa) */
 .scrollArea {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  max-width: 420px;
+  margin: 0 auto;
+  padding-bottom: 56px;
 }
 
-/* LOADING / SKELETON */
-.loading {
-  padding: 16px;
-}
+/* =========================
+   HERO / CAPA
+========================= */
 
-.loadingSkeleton {
-  width: 100%;
-  height: 220px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #1f2933, #111827);
-  margin-bottom: 16px;
-  animation: pulse 1.4s ease-in-out infinite;
-}
-
-.loadingContent {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.loadingLine {
-  height: 14px;
-  width: 70%;
-  border-radius: 999px;
-  background: #111827;
-  animation: pulse 1.4s ease-in-out infinite;
-}
-
-.loadingLineShort {
-  height: 12px;
-  width: 40%;
-  border-radius: 999px;
-  background: #111827;
-  animation: pulse 1.4s ease-in-out infinite;
-}
-
-.notFound {
-  padding: 24px 16px;
-  text-align: center;
-  color: #9ca3af;
-}
-
-/* HERO / CAPA */
 .hero {
   position: relative;
-  width: 100%;
-  height: 260px;
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
-  overflow: hidden;
-  background: radial-gradient(circle at top, #4f46e5, #020617 55%);
-  animation: fadeInUp 0.5s ease-out;
 }
 
 .cover {
   width: 100%;
-  height: 100%;
+  height: 230px;
   object-fit: cover;
-  filter: saturate(1.05);
-  transform: scale(1.02);
 }
 
-.coverPlaceholder {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 0% 0%, #6366f1, #a855f7, #0f172a);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.coverEmoji {
-  font-size: 32px;
-}
-
-.coverText {
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #e5e7eb;
-}
-
-/* SOBREPOSIÇÃO */
 .heroOverlay {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 18px 16px 14px;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72),
-    rgba(0, 0, 0, 0.35),
-    transparent
-  );
+  left: 12px;
+  right: 12px;
+  bottom: 14px;
 }
-
-.chipCategory {
-  padding: 4px 10px;
-  height: 24px;             /* 🔴 chave */
-  display: inline-flex;     /* 🔴 chave */
-  align-items: center;
-
-  font-size: 11px;
-  font-weight: 500;
-
-  border-radius: 999px;
-
-  background: rgba(99, 102, 241, 0.14);
-  color: #c7d2fe;
-
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  text-transform: uppercase; 
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
 
 .chipRow {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
-
-  flex-wrap: wrap;          /* permite quebrar linha */
-  max-width: 100%;
+  margin-bottom: 10px;
 }
 
-
-.chip,
-.chipPrimary,
-.chipPrice {
-  font-size: 11px;
-  padding: 4px 8px;
+.chip {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(249, 250, 251, 0.12);
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  color: #e5e7eb;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.9);
+  color: #333;
 }
 
 .chipPrimary {
-  border-color: rgba(251, 191, 36, 0.9);
-  background: linear-gradient(
-    135deg,
-    rgba(245, 158, 11, 0.25),
-    rgba(251, 191, 36, 0.15)
-  );
+  background: #ff2d8d;
+  color: #fff;
 }
 
 .chipPrice {
-  border-color: rgba(52, 211, 153, 0.9);
-  background: linear-gradient(
-    135deg,
-    rgba(16, 185, 129, 0.3),
-    rgba(5, 150, 105, 0.25)
-  );
-  color: #ecfdf5;
+  background: #111;
+  color: #fff;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #f9fafb;
-  text-shadow: 0 14px 45px rgba(0, 0, 0, 0.75);
-  line-height: 1.2;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #fff;
+  text-shadow: 0 3px 12px rgba(0,0,0,.35);
 }
 
-/* SEÇÕES */
-.section {
-  padding: 16px 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  animation: fadeInUp 0.5s ease-out;
-  animation-delay: 0.05s;
-  animation-fill-mode: both;
-}
+/* =========================
+   RSVP
+========================= */
 
-.infoCard,
-.organizerCard {
-  background: radial-gradient(circle at top left, #0b1220, #020617);
+.rsvpCard {
+  background: #ffffff;
+  margin: 16px;
+  padding: 16px;
   border-radius: 18px;
-  padding: 12px 13px 11px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.7);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+.rsvpPrimary {
+  width: 100%;
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.rsvpSecondaryRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.rsvpSecondary {
+  flex: 1;
+  background: #f3f3f4;
+  color: #333;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================
+   SEÇÕES / TEXTO
+========================= */
+
+.section {
+  margin: 16px;
+}
+
+.infoCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.05);
 }
 
 .sectionTitle {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #9ca3af;
-  margin-bottom: 6px;
+  color: #ff2d8d;
+  margin-bottom: 10px;
 }
 
 .locationRow {
   font-size: 14px;
-  color: #e5e7eb;
-}
-
-.placeholderText {
-  font-size: 13px;
-  color: #6b7280;
+  font-weight: 600;
+  color: #333;
 }
 
 .description {
   font-size: 14px;
-  color: #e5e7eb;
-  line-height: 1.5;
+  line-height: 1.65;
+  color: #444;
 }
 
-/* ORGANIZADOR */
-.organizerRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* =========================
+   🔽 POSTS / COMENTÁRIOS (ADIÇÃO)
+========================= */
 
-.organizerAvatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 0% 0%, #6366f1, #a855f7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 15px;
-  color: #f9fafb;
-}
-
-.organizerName {
-  font-size: 14px;
-  font-weight: 500;
-  color: #f9fafb;
-}
-
-.organizerHint {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-/* ESPAÇO PARA BARRA INFERIOR */
-.bottomSpacer {
-  height: 80px; /* espaço para não ficar escondido atrás da bottomBar */
-}
-
-/* BARRA INFERIOR FIXA */
-.bottomBar {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 6px);
-  background: linear-gradient(
-    to top,
-    rgba(2, 6, 23, 0.98),
-    rgba(2, 6, 23, 0.95),
-    rgba(2, 6, 23, 0.85),
-    transparent
-  );
-  border-top: 1px solid rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(16px);
-  z-index: 20;
-}
-
-.bottomBarMain {
-  max-width: 640px;
-  margin: 0 auto;
-  display: flex;
-  gap: 8px;
-}
-
-/* Botões – usando className passada para Button */
-.primaryAction {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.secondaryAction {
-  min-width: 110px;
-  font-size: 13px;
-}
-
-/* ANIMAÇÕES */
-@keyframes pulse {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 10px, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* RSVP STATES */
-.activeGoing {
-  background: linear-gradient(135deg, #22c55e, #15803d) !important;
-  color: #ffffff !important;
-}
-
-.activeMaybe {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
-  color: #ffffff !important;
-}
-
-.activeNo {
-  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
-  color: #ffffff !important;
-}
-
-/* RESPONSIVO BÁSICO (quando abrir em telas maiores) */
-@media (min-width: 640px) {
-  .page {
-    background: radial-gradient(circle at top, #020617, #020617 28%, #020617);
-  }
-
-  .hero {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .section {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .bottomBarMain {
-    max-width: 640px;
-  }
-}
-
-/* ============================================= */
-/* QUEM VAI — PARTIFUL STYLE */
-/* ============================================= */
-
-.attendanceCard {
-  background: radial-gradient(circle at top left, #0b1220, #020617);
-  border-radius: 18px;
-  padding: 14px 14px 16px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.6);
-  animation: fadeInUp 0.5s ease-out;
-}
-
-.attendanceCounters {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 13px;
-  color: #e5e7eb;
-}
-
-.avatarRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #f9fafb;
-  font-weight: 600;
-  font-size: 15px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
-  transform: translateY(0);
-  transition: transform 0.15s ease-out;
-}
-
-.avatar:active {
-  transform: scale(0.92);
-}
-
-.moreAvatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #d1d5db;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 13px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-/* ========================= */
-/* FEED DO EVENTO            */
-/* ========================= */
-
-.feedBlock {
-  margin-top: 8px;
+/* Card padrão (mesmo visual dos outros) */
+.postCard {
+  background: #ffffff;
+  border-radius: 16px;
   padding: 14px;
-  background: radial-gradient(circle at top left, #0b1220, #020617);
-  border-radius: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.6);
+  margin: 0 16px 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.05);
 }
 
+/* Composer */
 .composerBox {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 10px;
 }
 
 .composerInput {
   width: 100%;
-  min-height: 60px;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  padding: 10px;
-  background: #0f172a;
-  color: #f9fafb;
-  font-size: 14px;
+  min-height: 70px;
   resize: none;
-}
-
-.composerPreview {
-  width: 100%;
   border-radius: 12px;
-  margin-bottom: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  font-size: 14px;
+  font-family: inherit;
 }
 
-.composerActions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.composerButton {
-  font-size: 20px;
-  cursor: pointer;
+.composerInput:focus {
+  outline: none;
+  border-color: #ff2d8d;
 }
 
 .composerSubmit {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  padding: 6px 16px;
-  border-radius: 12px;
+  align-self: flex-end;
+  background: #ff2d8d;
   color: #fff;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Post */
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.postDate {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.postText {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Ações */
+.postActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.postAction {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+/* Comentários */
+.commentsContainer {
+  margin-top: 10px;
+  padding-left: 10px;
+  border-left: 2px solid #f3f4f6;
+}
+
+.commentItem {
+  margin-bottom: 8px;
+}
+
+.commentAuthor {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.commentText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* =========================
+   ESPAÇO FINAL
+========================= */
+
+.bottomSpacer {
+  height: 72px;
+}
+/* =========================
+   POSTS – PADRÃO FINAL
+========================= */
+
+.postsSection {
+  margin: 16px;
 }
 
 .postCard {
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
+/* Header do post */
 .postHeader {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 6px;
 }
 
-.postAvatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.postAvatarFallback {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #475569;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-}
-
-.postName {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
+.postAuthor {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
 }
 
 .postDate {
@@ -524,280 +302,663 @@
   color: #9ca3af;
 }
 
+/* Texto */
 .postText {
-  margin: 10px 0;
   font-size: 14px;
-  color: #e5e7eb;
+  line-height: 1.6;
+  color: #374151;
+  margin: 6px 0 10px;
 }
 
-/* ========================= */
-/* POST IMAGE — HIERARQUIA   */
-/* ========================= */
-
-.postImage {
-  display: block;
-  width: 80%;
-  max-width: 280px;
-  max-height: 160px;
-  object-fit: cover;
-  margin: 10px auto 0;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+/* Ações */
+.postActions {
+  display: flex;
+  gap: 12px;
 }
 
-
-/* ========================= */
-/* FEED DO EVENTO (EXTRA)    */
-/* ========================= */
-
-.composerButtonDisabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-/* Comentários */
-
-.commentsContainer {
-  margin-top: 8px;
-}
-
-.commentsToggle {
+.postAction {
   background: none;
   border: none;
-  color: #9ca3af;
   font-size: 12px;
-  padding: 0;
-  margin-bottom: 6px;
+  font-weight: 700;
+  color: #ff2d8d;
   cursor: pointer;
+  padding: 0;
 }
 
-.commentComposer {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-}
+/* =========================
+   COMENTÁRIOS
+========================= */
 
-.commentInput {
-  flex: 1;
-  border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: #020617;
-  color: #e5e7eb;
-  font-size: 13px;
-  padding: 6px 10px;
-}
-
-.commentSend {
-  background: #6366f1;
-  color: white;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
+.commentsContainer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f3f4f6;
 }
 
 .commentItem {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  padding: 8px 0;
 }
 
-.commentAvatar,
-.commentAvatarFallback {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #475569;
+.commentAuthor {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+}
+
+.commentText {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composerBox {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  margin: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.composerInput {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  font-size: 14px;
+  resize: none;
+  font-family: inherit;
+}
+
+.composerInput:focus {
+  outline: none;
+  border-color: #ff2d8d;
+}
+
+.composerSubmit {
+  margin-top: 10px;
+  align-self: flex-end;
+  background: #ff2d8d;
   color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+/* =================================================
+   COMMENTS + POSTS – PADRÃO VISUAL UNIFICADO
+================================================= */
+
+/* Toggle comentários */
+.commentsToggle {
+  background: none;
+  border: none;
+  color: #ff2d8d;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+/* Container geral */
+.commentsContainer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* Card de comentário */
+.commentItem {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+/* Avatar */
+.commentAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ff2d8d;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
+  flex-shrink: 0;
 }
 
+.commentAvatarFallback {
+  background: #ff2d8d;
+}
+
+/* Corpo */
 .commentBody {
   flex: 1;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 10px 12px;
 }
 
+/* Header */
 .commentHeader {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  margin-bottom: 4px;
 }
 
 .commentName {
   font-size: 12px;
-  font-weight: 600;
-  color: #e5e7eb;
+  font-weight: 700;
+  color: #111;
 }
 
 .commentDate {
-  font-size: 10px;
+  font-size: 11px;
   color: #9ca3af;
 }
 
+/* Texto */
 .commentText {
-  font-size: 12px;
-  color: #d1d5db;
-  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
 }
 
-.commentImage {
-  width: 100%;
-  border-radius: 10px;
+/* Ações */
+.commentActions {
+  display: flex;
+  gap: 12px;
   margin-top: 6px;
 }
 
-.commentActions {
-  display: flex;
-  gap: 6px;
-  margin-top: 4px;
+.commentApprove,
+.commentDelete {
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
 }
 
 .commentApprove {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #22c55e;
-  color: #022c22;
+  color: #16a34a;
 }
 
 .commentDelete {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #ef4444;
-  color: #fee2e2;
+  color: #dc2626;
 }
 
-/* Likes + admin actions */
+/* =================================================
+   COMPOSER (ESCREVER POST)
+================================================= */
 
-.postFooter {
+.composerBox {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  margin: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.composerInput {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  font-size: 14px;
+  resize: none;
+  font-family: inherit;
+}
+
+.composerInput:focus {
+  outline: none;
+  border-color: #ff2d8d;
+}
+
+.composerActions {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
-.likeButton {
-  border: none;
-  background: none;
-  color: #e5e7eb;
+.composerButton,
+.composerSubmit {
+  background: #ff2d8d;
+  color: #fff;
   font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+/* =========================================
+   AJUSTE FINO – BOTÕES DE COMENTÁRIOS
+   (sem mudar estrutura ou lógica)
+========================================= */
+
+/* Toggle "Ver comentários" */
+.commentsToggle {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff2d8d;
   cursor: pointer;
 }
 
-.likeButtonActive {
-  color: #f97316;
-}
-
-.postAdminActions {
+/* Ações do comentário */
+.commentActions {
   display: flex;
-  gap: 8px;
+  gap: 14px;
   margin-top: 6px;
 }
 
-.postApprove {
+/* Botões de ação (texto, não botão pesado) */
+.commentApprove,
+.commentDelete {
+  background: none;
+  border: none;
+  padding: 0;
   font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #22c55e;
-  color: #052e16;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.postDelete {
-  font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #ef4444;
-  color: #fee2e2;
+/* Cores sutis e padrão moderno */
+.commentApprove {
+  color: #16a34a;
 }
 
-.postPendingBadge {
-  display: inline-block;
-  margin-top: 2px;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: #facc15;
-  color: #422006;
+.commentDelete {
+  color: #dc2626;
 }
-/* ========================= */
-/* RSVP — BLOCO PRINCIPAL   */
-/* ========================= */
 
-.rsvpCard {
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 16px;
-  background: linear-gradient(
-    to bottom,
-    rgba(15, 23, 42, 0.9),
-    rgba(2, 6, 23, 0.95)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.18);
+/* ===============================
+   COMPOSER – BOTÕES
+=============================== */
+
+.composerActions {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Botão secundário (ícone / anexo, se existir) */
+.composerButton {
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Botão principal "Postar" */
+.composerSubmit {
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================================================
+   PATCH (NÃO REMOVE NADA) — BOTÕES MODERNOS EM COMENTÁRIOS
+   Objetivo: manter o arquivo inteiro intacto e só melhorar
+   os botões/ações na área de comentários e composer.
+   (Sobrescreve regras anteriores por vir no final.)
+========================================================= */
+
+/* Toggle "Ver comentários" */
+.commentsToggle{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,45,141,0.10);
+  border: 1px solid rgba(255,45,141,0.22);
+  color: #ff2d8d;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform .06s ease, background .15s ease, border-color .15s ease;
+}
+
+.commentsToggle:hover{
+  background: rgba(255,45,141,0.14);
+  border-color: rgba(255,45,141,0.30);
+}
+
+.commentsToggle:active{
+  transform: translateY(1px);
+}
+
+.commentsToggle:focus-visible{
+  outline: 3px solid rgba(255,45,141,0.22);
+  outline-offset: 2px;
+}
+
+/* Ações do comentário */
+.commentActions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Botões de ação — viram “chips” modernos (sem ficar botão pesado) */
+.commentApprove,
+.commentDelete{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform .06s ease, filter .12s ease, background .15s ease, border-color .15s ease;
+}
+
+/* Aprovar */
+.commentApprove{
+  color: #15803d;
+  background: rgba(34,197,94,0.12);
+  border-color: rgba(34,197,94,0.18);
+}
+
+.commentApprove:hover{
+  background: rgba(34,197,94,0.16);
+  border-color: rgba(34,197,94,0.26);
+}
+
+.commentApprove:active{
+  transform: translateY(1px);
+}
+
+/* Deletar */
+.commentDelete{
+  color: #b91c1c;
+  background: rgba(239,68,68,0.12);
+  border-color: rgba(239,68,68,0.18);
+}
+
+.commentDelete:hover{
+  background: rgba(239,68,68,0.16);
+  border-color: rgba(239,68,68,0.26);
+}
+
+.commentDelete:active{
+  transform: translateY(1px);
+}
+
+.commentApprove:focus-visible,
+.commentDelete:focus-visible{
+  outline: 3px solid rgba(17,24,39,0.12);
+  outline-offset: 2px;
+}
+
+/* Composer: botões mais “partyful” e alinhados */
+.composerActions{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
 
-.rsvpPrimary {
-  width: 100%;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 0;
+/* Botão secundário (ícone / anexo) */
+.composerButton{
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(17,24,39,0.08);
+  cursor: pointer;
+  transition: transform .06s ease, filter .12s ease, background .15s ease, border-color .15s ease;
 }
 
-.rsvpSecondaryRow {
-  display: flex;
-  gap: 8px;
+.composerButton:hover{
+  background: #eceef2;
+  border-color: rgba(17,24,39,0.12);
 }
 
-.rsvpSecondary {
-  flex: 1;
+.composerButton:active{
+  transform: translateY(1px);
+}
+
+.composerButton:focus-visible{
+  outline: 3px solid rgba(17,24,39,0.12);
+  outline-offset: 2px;
+}
+
+/* Botão principal "Postar" */
+.composerSubmit{
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
   font-size: 13px;
-  padding: 8px 0;
+  font-weight: 900;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: transform .06s ease, filter .12s ease;
 }
 
-.rsvpButtons {
-  display: flex;
+.composerSubmit:hover{
+  filter: brightness(1.02);
+}
+
+.composerSubmit:active{
+  transform: translateY(1px);
+}
+
+.composerSubmit:focus-visible{
+  outline: 3px solid rgba(255,45,141,0.22);
+  outline-offset: 2px;
+}
+
+/* Preview (se existir no JSX) */
+.composerPreview{
+  margin-top: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(17,24,39,0.10);
+}
+/* =========================================================
+   PATCH — BOTÃO ENVIAR COMENTÁRIO + DELETAR POST
+   (apenas visual, sem mexer em lógica ou estrutura)
+========================================================= */
+
+/* ===============================
+   ENVIAR COMENTÁRIO (Postar)
+=============================== */
+
+.composerSubmit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
+
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+
+  padding: 10px 18px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+
+  transition: transform .06s ease,
+              filter .15s ease,
+              box-shadow .15s ease;
 }
 
-.rsvpButton {
-  flex: 1;
-  height: 36px;                 /* ↓ mais fino */
-  padding: 0 10px;
-
-  border-radius: 10px;
-  font-size: 13px;              /* ↓ mais elegante */
-  font-weight: 500;
-
-  background: rgba(255,255,255,0.06);
-  color: #e5e7eb;
-
-  border: 1px solid rgba(255,255,255,0.08);
+.composerSubmit:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(255,45,141,0.35);
 }
 
-.rsvpButtonActive {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.22);
-  color: #fff;
+.composerSubmit:active {
+  transform: translateY(1px);
 }
-.shareButton {
+
+.composerSubmit:focus-visible {
+  outline: 3px solid rgba(255,45,141,0.25);
+  outline-offset: 2px;
+}
+
+/* ===============================
+   DELETAR POST
+   (texto vira chip moderno)
+=============================== */
+
+/* quando o deletar é um postAction */
+.postAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+
+  background: transparent;
+  border: 1px solid transparent;
+
+  cursor: pointer;
+  transition: background .15s ease,
+              border-color .15s ease,
+              transform .06s ease;
+}
+
+/* ESPECÍFICO PARA DELETAR */
+.postAction.delete,
+.postAction[data-action="delete"],
+.postAction:has(span:contains("Deletar")) {
+  color: #b91c1c;
+  background: rgba(239,68,68,0.12);
+  border-color: rgba(239,68,68,0.18);
+}
+
+.postAction.delete:hover,
+.postAction[data-action="delete"]:hover {
+  background: rgba(239,68,68,0.16);
+  border-color: rgba(239,68,68,0.28);
+}
+
+.postAction.delete:active,
+.postAction[data-action="delete"]:active {
+  transform: translateY(1px);
+}
+
+/* Fallback — se existir botão direto */
+.postDelete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: rgba(239,68,68,0.12);
+  color: #b91c1c;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+
+  border: 1px solid rgba(239,68,68,0.18);
+  cursor: pointer;
+
+  transition: background .15s ease,
+              border-color .15s ease,
+              transform .06s ease;
+}
+
+.postDelete:hover {
+  background: rgba(239,68,68,0.16);
+  border-color: rgba(239,68,68,0.28);
+}
+
+.postDelete:active {
+  transform: translateY(1px);
+}
+/* =================================================
+   LIKE — APENAS CORAÇÃO
+   (não altera lógica, só visual)
+================================================= */
+
+/* botão de like */
+.postAction.like {
+  position: relative;
+  font-size: 0; /* esconde texto */
+  width: 34px;
   height: 34px;
-  padding: 0 14px;
+  border-radius: 50%;
 
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  background: rgba(255,255,255,0.08);
-  color: #e5e7eb;
-
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,45,141,0.12);
+  border: 1px solid rgba(255,45,141,0.25);
+  cursor: pointer;
 }
 
+/* coração */
+.postAction.like::before {
+  content: "❤";
+  font-size: 16px;
+  color: #ff2d8d;
+  line-height: 1;
+}
+
+/* hover */
+.postAction.like:hover {
+  background: rgba(255,45,141,0.18);
+}
+
+/* ativo / curtido */
+.postAction.like.active::before,
+.postAction.like.liked::before {
+  color: #e11d48;
+}
+
+/* animação leve ao clicar */
+.postAction.like:active {
+  transform: scale(0.92);
+}

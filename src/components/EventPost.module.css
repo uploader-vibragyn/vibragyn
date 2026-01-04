@@ -1,0 +1,137 @@
+/* =========================
+   BASE CARD (MESMO PADRÃO)
+========================= */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 70px;
+  resize: none;
+
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+
+  padding: 12px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #ff2d8d;
+}
+
+.postButton {
+  align-self: flex-end;
+
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #fff;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* =========================
+   POST
+========================= */
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+.postDate {
+  font-size: 12px;
+  color: #888;
+  font-weight: 500;
+}
+
+.postContent {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* =========================
+   AÇÕES
+========================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  background: none;
+  border: none;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+
+  cursor: pointer;
+}
+
+.actionBtnDanger {
+  color: #d9534f;
+}
+
+/* =========================
+   COMENTÁRIOS
+========================= */
+
+.comments {
+  margin-top: 10px;
+  padding-left: 10px;
+  border-left: 2px solid #f2f2f2;
+}
+
+.comment {
+  margin-bottom: 8px;
+}
+
+.commentAuthor {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+}
+
+.commentText {
+  font-size: 13px;
+  color: #444;
+}

@@ -7,18 +7,18 @@ export default function OnboardingCard() {
   return (
     <div className={styles.card}>
       <h2 className={styles.title}>
-        Seu evento. Seus amigos. Do seu jeito.
+        Seu evento.<br/>Seus amigos.<br/>Do seu jeito.
       </h2>
 
       <p className={styles.subtitle}>
-        Crie eventos, convide quem você quiser e compartilhe experiências.
+        Crie momentos inesquecíveis e compartilhe experiências únicas.
       </p>
 
       <button
         className={styles.button}
         onClick={() => navigate("/login")}
       >
-        Entrar e descobrir
+        Entrar e Descobrir ✨
       </button>
     </div>
   );

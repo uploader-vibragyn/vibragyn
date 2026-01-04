@@ -1,30 +1,53 @@
 .button {
   width: 100%;
   padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
-  transition: 0.2s ease;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
 }
+
+.button:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* =========================
+   VARIANTES
+========================= */
 
 .primary {
-  background: var(--color-primary);
-  color: #fff;
+  background: #ff1493;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(255, 20, 147, 0.35);
 }
 
-.primary:active {
-  opacity: 0.75;
-}
-
-.outline {
-  background: transparent;
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
+.secondary {
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .ghost {
   background: transparent;
-  color: var(--color-primary);
+  color: #ff1493;
+}
+
+/* =========================
+   ESTADOS
+========================= */
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

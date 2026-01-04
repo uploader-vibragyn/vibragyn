@@ -9,6 +9,7 @@ export default function Navbar() {
 
   async function handleLogout() {
     await supabase.auth.signOut();
+    setMenuOpen(false);
     navigate("/login", { replace: true });
   }
 
@@ -23,7 +24,7 @@ export default function Navbar() {
       <header className={styles.topbar}>
         <button
           className={styles.menuButton}
-          onClick={() => setMenuOpen((v) => !v)}
+          onClick={() => setMenuOpen(v => !v)}
           aria-label="Menu"
         >
           ☰
@@ -64,7 +65,7 @@ export default function Navbar() {
         </button>
       </aside>
 
-      {/* CONTEÚDO (IMPORTANTE: fica DENTRO do wrapper do navbar) */}
+      {/* CONTEÚDO */}
       <main className={styles.content}>
         <Outlet />
       </main>

@@ -1,87 +1,188 @@
-.container {
-  min-height: calc(100vh - 64px);
+
+/* ==============================
+   WRAPPER — centraliza só HORIZONTAL
+   ============================== */
+
+.wrapper {
+  min-height: calc(100vh - 56px); /* altura da navbar */
+  background: #fff5f8;
+
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: radial-gradient(
-    circle at top,
-    #1b1f3b 0%,
-    #0b0f1f 60%,
-    #050712 100%
-  );
+  align-items: flex-start;
+
+  padding-top: 48px;   /* 👈 AQUI: espaço do navbar */
+  padding-left: 12px;
+  padding-right: 12px;
+
+  overflow-x: hidden;
 }
+
+
+/* ==============================
+   CARD
+   ============================== */
 
 .card {
   width: 100%;
-  max-width: 380px;
-  background: rgba(20, 25, 55, 0.85);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
+  max-width: 360px;
+
+  background: #ffffff;
+  border-radius: 20px;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  box-shadow: 0 8px 24px rgba(219, 112, 147, 0.15);
 }
 
-.card h1 {
+/* ==============================
+   TÍTULO
+   ============================== */
+
+.card h2 {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  color: #111827;
+  margin: 0 0 8px 0;
+  font-family: inherit;
+}
+
+/* ==============================
+   GOOGLE BUTTON
+   ============================== */
+
+.googleButton {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: background 0.15s ease, border 0.15s ease;
+}
+
+.googleButton:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+/* ==============================
+   DIVIDER
+   ============================== */
+
+.divider {
+  margin: 8px 0;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 13px;
+  color: #9ca3af;
 }
 
-form {
+/* ==============================
+   FORM
+   ============================== */
+
+.card form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-input {
-  background: #0e132a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 12px 14px;
-  color: #fff;
-  font-size: 0.95rem;
-}
+.card input {
+  width: 100%;
+  box-sizing: border-box; /* ❗ impede extrapolar */
 
-input:focus {
-  outline: none;
-  border-color: #6d7cff;
-}
-
-button {
-  margin-top: 8px;
-  background: linear-gradient(135deg, #6d7cff, #8a5cff);
-  border: none;
+  padding: 14px 16px;
   border-radius: 12px;
-  padding: 12px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+  border: 1px solid #f3f4f6;
+  background: #f9fafb;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  font-family: inherit;
+
+  outline: none;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.card input::placeholder {
+  color: #9ca3af;
 }
+
+.card input:focus {
+  border-color: #ff1493;
+  box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.15);
+  background: #ffffff;
+}
+
+/* ==============================
+   BOTÃO PRINCIPAL
+   ============================== */
+
+.card button[type="submit"] {
+  width: 100%;
+  padding: 14px 16px;
+
+  background: linear-gradient(135deg, #ff1493, #ff4fd8);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  font-family: inherit;
+
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+
+  box-shadow: 0 10px 30px rgba(219, 112, 147, 0.25);
+}
+
+.card button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==============================
+   ERROR
+   ============================== */
 
 .error {
-  color: #ff6b6b;
-  font-size: 0.85rem;
-  text-align: center;
+  font-size: 13px;
+  color: #dc2626;
 }
 
+/* ==============================
+   SWITCH
+   ============================== */
+
 .switch {
-  margin-top: 18px;
+  margin-top: 10px;
   text-align: center;
-  font-size: 0.85rem;
-  color: #b3b6ff;
+  font-size: 13px;
+  color: #6b7280;
 }
 
 .switch button {
   background: none;
   border: none;
-  color: #fff;
-  font-weight: 600;
+  margin-left: 4px;
+
+  color: #ff1493;
+  font-weight: 700;
+  font-family: inherit;
+
   cursor: pointer;
-  padding: 0;
 }

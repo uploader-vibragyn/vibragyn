@@ -58,3 +58,111 @@
   margin-top: 10px;
   color: rgba(255,255,255,0.6);
 }
+/* =================================================
+   PATCH — REVIEW EVENT NO PADRÃO DO APP
+   (claro, translúcido, partyful)
+================================================= */
+
+/* ===== BASE ===== */
+.container {
+  background: #fff5f8;
+  color: #111827;
+}
+
+/* ===== HEADER DO PROCESSO ===== */
+.processHeader {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(255, 182, 193, 0.35);
+  padding: 6px 12px 4px;
+}
+
+.processTitle {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.processStep {
+  font-size: 12px;
+  color: rgba(17, 24, 39, 0.55);
+}
+
+/* ===== TÍTULO ===== */
+.title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* ===== IMAGEM ===== */
+.cover {
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  padding: 12px 14px;
+
+  border: 1px solid rgba(255, 182, 193, 0.35);
+  box-shadow: 0 6px 18px rgba(255, 45, 141, 0.12);
+}
+
+.card span {
+  font-size: 11px;
+  font-weight: 800;
+  color: #ff2d8d;
+}
+
+.card p {
+  font-size: 13px;
+  color: #374151;
+}
+
+/* ===== BOTÕES ===== */
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* Se os botões forem <button> simples */
+.buttons button {
+  flex: 1;
+  border-radius: 999px;
+  padding: 10px 14px;
+
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+
+  border: 1px solid rgba(255, 182, 193, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  color: #111827;
+
+  transition: transform .06s ease,
+              box-shadow .15s ease,
+              background .15s ease;
+}
+
+.buttons button:hover {
+  box-shadow: 0 6px 18px rgba(255, 45, 141, 0.18);
+}
+
+.buttons button:active {
+  transform: translateY(1px);
+}
+
+/* Se existir botão principal (publicar) */
+.buttons .primary,
+.buttons .confirm {
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
+  border: none;
+}

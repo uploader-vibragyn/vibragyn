@@ -95,3 +95,83 @@
   line-height: 1.4;
   color: #475569;
 }
+/* =================================================
+   PATCH — VISIBILITY SELECT NO PADRÃO DO APP
+   (claro, translúcido, partyful)
+================================================= */
+
+/* ===== BASE ===== */
+.container {
+  background: #fff5f8;
+  color: #111827;
+}
+
+/* ===== HEADER DO PROCESSO ===== */
+.processHeader {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(255, 182, 193, 0.35);
+}
+
+.processTitle {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.processStep {
+  color: rgba(17, 24, 39, 0.55);
+}
+
+/* ===== CONTEÚDO ===== */
+.content {
+  padding-top: 14px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+
+  box-shadow: 0 8px 22px rgba(255, 45, 141, 0.12);
+  border: 1px solid rgba(255, 182, 193, 0.35);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(255, 45, 141, 0.22);
+}
+
+/* ===== ÍCONE ===== */
+.icon {
+  font-size: 22px;
+  color: #ff2d8d;
+}
+
+/* ===== TEXTO ===== */
+.cardTitle {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.cardDescription {
+  font-size: 12px;
+  color: #475569;
+}
+
+/* ===== ESTADO ATIVO (se existir) ===== */
+.card.selected {
+  border-color: #ff2d8d;
+  box-shadow: 0 12px 28px rgba(255, 45, 141, 0.35);
+}

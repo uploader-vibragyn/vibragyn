@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase/client";
 import { ensureUserProfile } from "../auth/authActions";
 
 export default function AuthCallback() {
@@ -25,6 +22,14 @@ export default function AuthCallback() {
         }
 
         await ensureUserProfile(user);
+
+        const redirect = localStorage.getItem("postLoginRedirect");
+
+        if (redirect) {
+          localStorage.removeItem("postLoginRedirect");
+          navigate(redirect, { replace: true });
+          return;
+        }
 
         navigate("/", { replace: true });
       } catch (err) {
