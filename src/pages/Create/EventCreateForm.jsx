@@ -6,6 +6,12 @@ import { supabase } from "../../supabase/client";
 import { useAuth } from "../../auth/useAuth";
 import styles from "./EventCreateForm.module.css";
 
+/* 🔽 ADIÇÃO (PRO, sem bug) */
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
+/* 🔼 ADIÇÃO */
+
 function toast(msg) {
   const div = document.createElement("div");
   div.className = styles.toast;
@@ -51,6 +57,19 @@ export default function EventCreateForm() {
       setPreviewUrl(state.image_url || null);
     }
   }, [state]);
+
+  /* 🔽 ADIÇÃO (editor real, sem bug de cursor) */
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({ openOnClick: false }),
+    ],
+    content: description || "",
+    onUpdate({ editor }) {
+      setDescription(editor.getHTML());
+    },
+  });
+  /* 🔼 ADIÇÃO */
 
   function handleFileChange(e) {
     const selected = e.target.files?.[0];
@@ -142,14 +161,14 @@ export default function EventCreateForm() {
         />
       </div>
 
+      {/* 🔽 ÚNICA TROCA VISUAL/FUNCIONAL */}
       <div className={styles.card}>
-        <div
-          contentEditable
+        <EditorContent
+          editor={editor}
           className={styles.descriptionInput}
-          onInput={(e) => setDescription(e.currentTarget.innerHTML)}
-          dangerouslySetInnerHTML={{ __html: description }}
         />
       </div>
+      {/* 🔼 */}
 
       <div className={styles.card}>
         <input
@@ -166,13 +185,15 @@ export default function EventCreateForm() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="party">🎉 Festa</option>
-          <option value="show">🎤 Show</option>
-          <option value="birthday">🎂 Aniversário</option>
-          <option value="workshop">🧠 Workshop</option>
-          <option value="bar">🍻 Bar</option>
-          <option value="art">🎨 Arte</option>
-          <option value="culture">🎭 Cultura</option>
+          <option value="party">Festa</option>
+          <option value="show">Show</option>
+          <option value="teather">Teatro</option>
+          <option value="birthday">Aniversário</option>
+          <option value="class">Aulas-Cursos</option>
+          <option value="workshop">workshop</option>
+          <option value="sport">Esporte</option>
+          <option value="art">Arte</option>
+          <option value="culture">Cultura</option>
         </select>
       </div>
 

@@ -962,3 +962,61 @@
 .postAction.like:active {
   transform: scale(0.92);
 }
+/* =========================================
+   FIX REAL — AVATAR IMG (POST HEADER)
+   ========================================= */
+
+.postHeader img {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+  object-fit: cover;
+
+  background: #f3f4f6;              /* neutro */
+  border: 1px solid rgba(17, 24, 39, 0.08);
+
+  box-shadow: none;
+}
+
+/* fallback visual caso seja letra / imagem simples */
+.postHeader img:not([src]),
+.postHeader img[src=""] {
+  background: #f3f4f6;
+}
+/* =========================================
+   LIKE — força global dentro de CSS Modules
+   ========================================= */
+
+:global(button.undefined) {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  line-height: 1 !important;
+  font-size: 16px !important;
+
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  color: #9ca3af !important;
+  transition: color 0.15s ease, transform 0.08s ease, opacity 0.15s ease !important;
+}
+
+:global(button.undefined:hover) {
+  color: #ef4444 !important;
+}
+
+:global(button.undefined:active) {
+  transform: scale(0.9) !important;
+  opacity: 0.95 !important;
+}
+

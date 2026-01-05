@@ -56,3 +56,105 @@
 .list > *:first-child {
   margin-top: 0 !important;
 }
+/* =========================================
+   POLISH FINAL — HOME CATEGORY FILTER
+   ========================================= */
+
+/* Wrapper do filtro */
+.categoryFilter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  padding: 6px 2px 14px;
+  margin-bottom: 12px;
+}
+
+/* Desktop: tudo em uma linha */
+@media (min-width: 768px) {
+  .categoryFilter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .categoryFilter::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+.categoryFilter::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
+}
+
+/* Pills */
+.categoryFilter button {
+  flex-shrink: 0;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+
+  background: rgba(255, 255, 255, 0.9);
+  color: #111827;
+
+  border: 1px solid rgba(255, 45, 141, 0.25);
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.06s ease;
+}
+
+/* Hover elegante */
+.categoryFilter button:hover {
+  background: rgba(255, 45, 141, 0.08);
+  box-shadow: 0 4px 14px rgba(255, 45, 141, 0.15);
+}
+
+/* Active (visual pronto para quando quiser ligar via JS) */
+.categoryFilter button.active {
+  background: linear-gradient(135deg, #ff2d8d, #ff4fbf);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(255, 45, 141, 0.35);
+}
+
+/* Press */
+.categoryFilter button:active {
+  transform: translateY(1px);
+}
+
+.categoryFilter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  padding: 6px 2px 14px;
+  margin-bottom: 12px;
+
+  /* 🔥 FIREFOX FIX */
+  scrollbar-width: none;   /* Firefox */
+  overflow-x: visible;     /* Mobile / wrap */
+}
+
+
+/* =========================================
+   LISTA DE EVENTOS — RESPIRAÇÃO PREMIUM
+   ========================================= */
+
+.list {
+  gap: 22px;
+}
+
+/* Sombra suave no primeiro card (efeito destaque) */
+.list > *:first-child {
+  box-shadow: 0 10px 30px rgba(255, 45, 141, 0.12);
+}
