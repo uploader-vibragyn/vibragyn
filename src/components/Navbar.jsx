@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabase/client";
 import styles from "./Navbar.module.css";
@@ -29,7 +29,14 @@ export default function Navbar() {
         >
           ☰
         </button>
-        <span className={styles.logo}>VibraGyn</span>
+
+        <span
+          className={styles.logo}
+          role="button"
+          onClick={() => go("/feed")}
+        >
+          VibraGyn
+        </span>
       </header>
 
       {/* OVERLAY */}
@@ -64,11 +71,6 @@ export default function Navbar() {
           Sair
         </button>
       </aside>
-
-      {/* CONTEÚDO */}
-      <main className={styles.content}>
-        <Outlet />
-      </main>
     </div>
   );
 }

@@ -6,13 +6,14 @@ export default function VisibilitySelect() {
   const { state } = useLocation();
 
   function choose(visibility) {
-    navigate("/create/format", {
-      state: {
-        ...state,
-        event_visibility: visibility,
-      },
-    });
-  }
+  navigate("/create/format", {
+    state: {
+      ...state,
+      is_public: visibility === "public",
+    },
+  });
+}
+
 
   return (
     <div className={styles.container}>

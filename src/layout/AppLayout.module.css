@@ -1,9 +1,12 @@
 .app {
   min-height: 100vh;
-  background: #0b0f16;
+  background: #fff5f7; /* fundo padrão VibraGyn (rosa claro) */
+  display: flex;
+  flex-direction: column;
 }
 
-/* ESSENCIAL: empurra o conteúdo para não ficar atrás do navbar */
+/* empurra o conteúdo para não ficar atrás do navbar */
 .content {
-  padding-top: 56px; /* altura da topbar */
+  padding-top: 56px; /* altura real da navbar */
+  flex: 1;
 }

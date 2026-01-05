@@ -96,9 +96,19 @@ export default function ReviewEvent() {
       </div>
 
       <div className={styles.buttons}>
-        <Button onClick={() => navigate(-1)}>Voltar</Button>
-        <Button onClick={publish}>Publicar</Button>
-      </div>
+  <Button
+    onClick={() =>
+      navigate("/create/form", {
+        state: { ...state, fromReview: true },
+      })
+    }
+  >
+    Voltar
+  </Button>
+
+  <Button onClick={publish}>Publicar</Button>
+</div>
+
 
       {ToastComponent}
     </div>

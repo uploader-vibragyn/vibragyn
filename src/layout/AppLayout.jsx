@@ -2,26 +2,21 @@ import { Outlet } from "react-router-dom";
 import { useAuth } from "../auth/useAuth";
 import Navbar from "../components/Navbar";
 import PublicTopBar from "../components/PublicTopBar";
+import styles from "./AppLayout.module.css";
 
 export default function AppLayout() {
   const { user, isLoading } = useAuth();
 
-  if (isLoading) {
-    return <div style={{ minHeight: "100vh", background: "#0b0f16" }} />;
-  }
+  if (isLoading) return null;
 
-  // 🔴 IMPORTANTE:
-  // Navbar já contém <Outlet />
-  // Logo, NÃO renderizamos <Outlet /> aqui quando user existe
-  if (user) {
-    return <Navbar />;
-  }
-
-  // Público: topbar simples + outlet
   return (
-    <>
-      <PublicTopBar />
-      <Outlet />
-    </>
+    <div className={styles.app}>
+      {user ? <Navbar /> : <PublicTopBar />}
+
+      {/* 🔥 ESSENCIAL */}
+      <main className={styles.content}>
+        <Outlet />
+      </main>
+    </div>
   );
 }

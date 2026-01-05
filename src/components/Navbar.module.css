@@ -1,13 +1,22 @@
-/* CONTAINER ÚNICO DO APP */
-.app {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  background: #0b0f1a;
-  overflow: hidden;
+/* =================================================
+   TOKENS DE PALETA — VIBRAGYN
+================================================= */
+:root {
+  --pink-50: #fff1f6;
+  --pink-100: #ffe4ef;
+  --pink-300: #ff8fc3;
+  --pink-500: #ff4fa3;
+
+  --ink-900: #1f1f29;
+  --ink-700: #3a3a4a;
+
+  --surface-glass: rgba(255, 241, 246, 0.92);
+  --border-soft: rgba(255, 79, 163, 0.18);
 }
 
-/* TOP BAR FIXA */
+/* =================================================
+   TOP BAR (FIXA)
+================================================= */
 .topbar {
   position: fixed;
   top: 0;
@@ -20,176 +29,155 @@
   gap: 8px;
 
   padding: 0 12px;
-  background: #0b0f1a;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  z-index: 10;
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid var(--border-soft);
+  z-index: 1000;
 }
 
-.menuButton {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.logo {
-  color: #fff;
-  font-weight: 700;
-}
-
-/* MENU LATERAL — PARTE DO APP */
-.sideMenu {
-  position: absolute;
-  top: 56px;
-  left: 0;
-
-  width: 200px;
-  height: calc(100% - 56px);
-
-  background: rgba(15,18,30,0.98);
-  padding: 12px;
-
-  transform: translateX(-100%);
-  transition: transform 0.25s ease;
-  z-index: 5;
-}
-
-.open {
-  transform: translateX(0);
-}
-
-.menuItem {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background: none;
-  border: none;
-  color: #fff;
-  text-align: left;
-  cursor: pointer;
-}
-
-.logout {
-  color: #ff5a5a;
-}
-
-/* CONTEÚDO — ÚNICO SCROLL */
-.content {
-  position: absolute;
-  top: 56px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  overflow-y: auto;
-  padding: 16px;
-}
 /* =================================================
-   PATCH — NAVBAR PRIVADO SEGUINDO PUBLIC TOP BAR
-   (somente visual, sem alterar estrutura)
+   BOTÃO MENU
 ================================================= */
-
-/* ===== TOP BAR ===== */
-.topbar {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border-bottom: 1px solid rgba(255, 182, 193, 0.35);
-}
-
-/* ===== LOGO ===== */
-.logo {
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: -1px;
-
-  background: linear-gradient(90deg, #FF69B4, #7B61FF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ===== BOTÃO MENU (☰) ===== */
 .menuButton {
   font-size: 20px;
   border-radius: 999px;
   padding: 6px 10px;
 
-  background: rgba(255, 105, 180, 0.12);
-  border: 1px solid rgba(255, 105, 180, 0.25);
-  color: #FF69B4;
+  background: rgba(255, 79, 163, 0.12);
+  border: 1px solid rgba(255, 79, 163, 0.25);
+  color: var(--pink-500);
 
-  transition: background .15s ease, transform .06s ease;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.06s ease;
 }
 
 .menuButton:hover {
-  background: rgba(255, 105, 180, 0.18);
+  background: rgba(255, 79, 163, 0.18);
 }
 
 .menuButton:active {
   transform: translateY(1px);
 }
 
-/* ===== SIDE MENU ===== */
-.sideMenu {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* =================================================
+   LOGO
+================================================= */
+.logo {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
 
-  border-right: 1px solid rgba(255, 182, 193, 0.35);
+  background: linear-gradient(90deg, var(--pink-500), #7b61ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* ===== ITENS DO MENU ===== */
+/* =================================================
+   SIDE MENU
+================================================= */
+.sideMenu {
+  position: fixed;
+  top: 56px;
+  left: 0;
+
+  width: 140px;
+  height: calc(100vh - 56px);
+
+  background: var(--surface-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-right: 1px solid var(--border-soft);
+  padding: 12px;
+
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  z-index: 900;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+/* =================================================
+   ITENS DO MENU
+================================================= */
 .menuItem {
-  color: #111827;
-  font-weight: 700;
+  display: block;
+  width: 100%;
+
+  padding: 8px 10px;
+  margin-bottom: 4px;
+
+  background: transparent;
+  border: none;
   border-radius: 12px;
 
-  transition: background .15s ease, transform .06s ease;
+  color: var(--ink-900);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.06s ease;
 }
 
 .menuItem:hover {
-  background: rgba(255, 105, 180, 0.12);
+  background: rgba(255, 79, 163, 0.12);
 }
 
 .menuItem:active {
   transform: translateY(1px);
 }
 
-/* ===== LOGOUT ===== */
-.logout {
-  color: #b91c1c;
-  font-weight: 800;
-}
-
-.logout:hover {
-  background: rgba(239, 68, 68, 0.12);
-}
 /* =================================================
-   PATCH — SIDEBAR MENOR + TRANSPARÊNCIA
-   (somente visual)
+   LOGOUT
 ================================================= */
-
-/* Sidebar 30% menor */
-.sideMenu {
-  width: 140px; /* antes ~200px → redução ~30% */
-  
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border-right: 1px solid rgba(255, 182, 193, 0.35);
-}
-
-/* Ajuste interno para não esmagar conteúdo */
-.menuItem {
-  padding: 8px 10px;
-  font-size: 13px;
-}
-
-/* Logout acompanha o mesmo ritmo */
 .logout {
-  padding: 8px 10px;
-  font-size: 13px;
+  display: block;
+  width: 100%;
+  text-align: left;
+
+  padding: 8px 10px; /* igual aos menuItem */
+  border-radius: 12px; /* igual aos outros */
+
+  background: transparent;
+  border: none;
+
+  color: #7b61ff;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    color .15s ease,
+    background .15s ease,
+    transform .06s ease;
+}
+.logout:hover {
+  background: rgba(255, 105, 180, 0.12);
+  color: #ff69b4;
+}
+.logout:active {
+  transform: translateY(1px);
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4; /* abaixo do menu, acima do conteúdo */
+  background: transparent;
+}
+
+
+
+/* =================================================
+   OVERLAY (FECHAR AO CLICAR FORA)
+================================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  background: transparent;
 }

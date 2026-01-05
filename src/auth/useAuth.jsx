@@ -8,13 +8,13 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 1️⃣ BUSCA SESSÃO INICIAL
+    // Sessão inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setIsLoading(false);
     });
 
-    // 2️⃣ LISTENER DE AUTH (SEM NAVEGAÇÃO!)
+    // Listener de auth (SEM redirect)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  // 🔐 AÇÕES DE AUTH (NÃO NAVEGAM)
+  // Email + senha
   async function signIn(email, password) {
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -41,10 +41,18 @@ export function AuthProvider({ children }) {
     if (error) throw error;
   }
 
+  // ✅ GOOGLE LOGIN COM REDIRECT CORRETO
   async function signInWithGoogle() {
+    const redirect =
+      localStorage.getItem("postLoginRedirect") || "/feed";
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${redirect}`,
+      },
     });
+
     if (error) throw error;
   }
 

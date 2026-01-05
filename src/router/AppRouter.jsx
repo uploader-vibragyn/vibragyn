@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "../layout/AppLayout";
 import RequireAuth from "../auth/RequireAuth";
 
@@ -24,20 +24,26 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
+        {/* PUBLICAS */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+
+        {/* EVENTO (publica por rota; a página pode exigir login internamente se for privado) */}
         <Route path="/event/:id" element={<EventDetailsPage />} />
 
+        {/* PRIVADAS */}
         <Route element={<RequireAuth />}>
           <Route path="/feed" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
+          {/* CREATE FLOW */}
           <Route path="/create/visibility" element={<VisibilitySelect />} />
           <Route path="/create/format" element={<FormatSelect />} />
           <Route path="/create/payment" element={<PaymentSelect />} />
           <Route path="/create/form" element={<EventCreateForm />} />
           <Route path="/create/review" element={<ReviewEvent />} />
 
+          {/* DASHBOARD */}
           <Route path="/dashboard">
             <Route index element={<OverviewPage />} />
             <Route path="event/:id" element={<DashboardEventPage />}>
@@ -46,8 +52,11 @@ export default function AppRouter() {
             </Route>
           </Route>
 
+          {/* ADMIN */}
           <Route path="/admin/review" element={<AdminReviewPage />} />
         </Route>
+
+        {/* FALLBACK */}
       </Route>
     </Routes>
   );

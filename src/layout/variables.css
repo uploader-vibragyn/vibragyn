@@ -1,0 +1,15 @@
+:root {
+  /* BRAND */
+  --pink-50: #fff1f6;
+  --pink-100: #ffe4ef;
+  --pink-300: #ff8fc3;
+  --pink-500: #ff4fa3;
+
+  /* NEUTROS */
+  --ink-900: #1f1f29;
+  --ink-700: #3a3a4a;
+
+  /* UI */
+  --surface-glass: rgba(255, 241, 246, 0.92);
+  --border-soft: rgba(255, 79, 163, 0.18);
+}

@@ -63,21 +63,6 @@ export default function EventDetailsPage() {
     }
   }
 
-  useEffect(() => {
-  if (
-    !user &&
-    !isLoading &&
-    !localStorage.getItem("postLoginRedirect")
-  ) {
-    localStorage.setItem(
-      "postLoginRedirect",
-      window.location.pathname
-    );
-  }
-}, [user, isLoading]);
-
-
-
  useEffect(() => {
   async function loadEvent() {
     try {

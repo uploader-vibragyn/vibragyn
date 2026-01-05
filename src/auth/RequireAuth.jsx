@@ -1,14 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./useAuth";
 
 export default function RequireAuth() {
-  const { isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
+  const location = useLocation();
 
   if (isLoading) return null;
 
-  // ❌ NÃO REDIRECIONA
-  // ❌ NÃO MANDA PRA /login
-  // ❌ NÃO MANDA PRA /
+if (!user) {
+  if (!localStorage.getItem("postLoginRedirect")) {
+    localStorage.setItem(
+      "postLoginRedirect",
+      location.pathname + location.search
+    );
+  }
+
+  return <Navigate to="/login" replace />;
+}
 
   return <Outlet />;
 }

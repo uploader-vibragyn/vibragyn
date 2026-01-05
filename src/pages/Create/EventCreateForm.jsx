@@ -12,6 +12,23 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 /* 🔼 ADIÇÃO */
 
+function toDatetimeLocal(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return "";
+
+  const pad = (n) => String(n).padStart(2, "0");
+
+  const yyyy = date.getFullYear();
+  const mm = pad(date.getMonth() + 1);
+  const dd = pad(date.getDate());
+  const hh = pad(date.getHours());
+  const min = pad(date.getMinutes());
+
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
+
 function toast(msg) {
   const div = document.createElement("div");
   div.className = styles.toast;
@@ -44,39 +61,130 @@ export default function EventCreateForm() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const isPaid = state?.is_paid ?? false;
+
 
   useEffect(() => {
-    if (state?.fromReview === true) {
-      setTitle(state.title || "");
-      setDescription(state.description || "");
-      setEventDate(state.event_date || "");
-      setCategory(state.category || "party");
-      setLocationField(state.location || "");
-      setOnlineUrl(state.online_url || "");
-      setPrice(state.price || "");
-      setPreviewUrl(state.image_url || null);
-    }
-  }, [state]);
+  let source = state;
+
+  if (!source) {
+    try {
+      const raw = sessionStorage.getItem("vg_create_event_draft");
+      if (raw) source = JSON.parse(raw);
+    } catch {}
+  }
+
+  if (!source) return;
+
+  setTitle(source.title || "");
+  setDescription(source.description || "");
+  if (source.event_date) {
+  setEventDate(toDatetimeLocal(source.event_date));
+} else {
+  const now = new Date();
+  const formatted =
+    now.getFullYear() +
+    "-" +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(now.getDate()).padStart(2, "0") +
+    "T" +
+    String(now.getHours()).padStart(2, "0") +
+    ":" +
+    String(now.getMinutes()).padStart(2, "0");
+
+  setEventDate(formatted);
+}
+
+  setCategory(source.category || "party");
+  setLocationField(source.location || "");
+  setOnlineUrl(source.online_url || "");
+  setPrice(source.price || "");
+  setPreviewUrl(source.image_url || null);
+}, [state]);
+
+
+
 
   /* 🔽 ADIÇÃO (editor real, sem bug de cursor) */
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({ openOnClick: false }),
-    ],
-    content: description || "",
-    onUpdate({ editor }) {
-      setDescription(editor.getHTML());
-    },
-  });
+  extensions: [
+    StarterKit,
+    Link.configure({ openOnClick: false }),
+  ],
+  content: "",
+  onUpdate({ editor }) {
+    setDescription(editor.getHTML());
+  },
+});
+
+useEffect(() => {
+  if (!editor) return;
+  if (!description) return;
+
+  editor.commands.setContent(description);
+}, [editor]);
+
+
   /* 🔼 ADIÇÃO */
 
-  function handleFileChange(e) {
-    const selected = e.target.files?.[0];
-    if (!selected) return;
-    setFile(selected);
-    setPreviewUrl(URL.createObjectURL(selected));
-  }
+  async function resizeAndCompressImage(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+
+    img.onload = () => {
+      const MAX_SIZE = 1600; // px
+      let { width, height } = img;
+
+      if (width > height && width > MAX_SIZE) {
+        height = Math.round((height * MAX_SIZE) / width);
+        width = MAX_SIZE;
+      } else if (height > MAX_SIZE) {
+        width = Math.round((width * MAX_SIZE) / height);
+        height = MAX_SIZE;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          resolve(
+            new File([blob], file.name, {
+              type: "image/jpeg",
+              lastModified: Date.now(),
+            })
+          );
+        },
+        "image/jpeg",
+        0.8 // compressão (0.7–0.85 é o sweet spot)
+      );
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+
+  async function handleFileChange(e) {
+  const selected = e.target.files?.[0];
+  if (!selected) return;
+
+  const optimized = await resizeAndCompressImage(selected);
+
+  setFile(optimized);
+  setPreviewUrl(URL.createObjectURL(optimized));
+}
+
 
   async function uploadImage() {
     if (!file && previewUrl) return previewUrl;
@@ -219,7 +327,8 @@ export default function EventCreateForm() {
         </div>
       )}
 
-      {state?.is_paid && (
+      {(state?.is_paid ?? JSON.parse(sessionStorage.getItem("vg_create_event_draft"))?.is_paid) && (
+
         <div className={styles.card}>
           <input
             className={styles.input}

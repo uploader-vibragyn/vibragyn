@@ -158,3 +158,40 @@
 .list > *:first-child {
   box-shadow: 0 10px 30px rgba(255, 45, 141, 0.12);
 }
+/* =========================================
+   ANIMAÇÃO DE ENTRADA DOS CARDS
+   ========================================= */
+
+.cardWrapper {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 420ms ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   SENTINEL DO INFINITE SCROLL
+   ========================================= */
+
+.loadMore {
+  height: 1px;
+}
+
+/* =========================================
+   MICRO-POLISH — FEED MAIS LEVE
+   ========================================= */
+
+.list {
+  will-change: transform;
+}
+
+/* SLOT DO CARD DESLOGADO */
+.onboardingSlot {
+  margin-bottom: 24px;
+}

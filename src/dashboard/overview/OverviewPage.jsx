@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase/client";
 import { useAuth } from "../../auth/useAuth";
+import { useToast } from "../../hooks/useToast";
+import ConfirmModal from "../../components/ui/ConfirmModal";
 import "./overview.css";
 
 export default function OverviewPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showToast, ToastComponent } = useToast();
 
   const [stats, setStats] = useState({
     eventsCount: 0,
@@ -19,6 +22,161 @@ export default function OverviewPage() {
 
   const creatorId = useMemo(() => user?.id ?? null, [user]);
 
+  const [confirmConfig, setConfirmConfig] = useState(null);
+
+  function openConfirm(config) {
+    setConfirmConfig(config);
+  }
+
+  function closeConfirm() {
+    setConfirmConfig(null);
+  }
+
+  /* =========================
+     EDITAR EVENTO
+  ========================== */
+  async function handleEditEvent(eventId) {
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("id", eventId)
+      .single();
+
+    const { data: tickets } = await supabase
+  .from("tickets")
+  .select("*")
+  .eq("event_id", eventId);
+
+  const { data: ticketTypes } = await supabase
+  .from("ticket_types")
+  .select("*")
+  .eq("event_id", eventId);
+
+
+
+    if (error || !data) {
+      console.error("Erro ao carregar evento para edição:", error);
+      showToast("Erro ao abrir evento para edição", "error");
+      return;
+    }
+
+    sessionStorage.setItem(
+  "vg_create_event_draft",
+  JSON.stringify({
+    ...data,
+    is_paid: data.is_paid === true,
+    price: data.price ?? 0,
+    fromDashboardEdit: true,
+  })
+);
+
+
+
+    navigate("/create/form");
+  }
+
+  /* =========================
+     CANCELAR EVENTO
+  ========================== */
+  async function handleCancelEvent(eventId) {
+    openConfirm({
+      title: "Cancelar evento",
+      message:
+        "Tem certeza que deseja cancelar este evento? Ele não ficará mais visível ao público.",
+      danger: true,
+      onConfirm: async () => {
+        closeConfirm();
+
+        const { error } = await supabase
+          .from("events")
+          .update({ status: "cancelled" })
+          .eq("id", eventId)
+          .eq("creator_id", user.id);
+
+        if (error) {
+          console.error("Erro ao cancelar evento:", error);
+          showToast("Não foi possível cancelar o evento", "error");
+          return;
+        }
+
+        showToast("Evento cancelado com sucesso");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      },
+    });
+  }
+
+  /* =========================
+     DELETAR EVENTO (DRAFT/PENDING)
+  ========================== */
+  async function handleDeleteEvent(eventId) {
+    openConfirm({
+      title: "Deletar evento",
+      message:
+        "Isso vai apagar o evento definitivamente. Essa ação não pode ser desfeita.",
+      danger: true,
+      onConfirm: async () => {
+        closeConfirm();
+
+        const { error } = await supabase
+          .from("events")
+          .delete()
+          .eq("id", eventId)
+          .eq("creator_id", user.id)
+          .in("status", ["draft", "pending"]);
+
+        if (error) {
+          console.error("Erro ao deletar evento:", error);
+          showToast("Não foi possível deletar o evento", "error");
+          return;
+        }
+
+        showToast("Evento deletado com sucesso");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      },
+    });
+  }
+
+  /* =========================
+     ARQUIVAR EVENTO
+  ========================== */
+  async function handleArchiveEvent(eventId) {
+    openConfirm({
+      title: "Arquivar evento",
+      message: "Arquivar este evento? Ele será removido do dashboard principal.",
+      danger: false,
+      onConfirm: async () => {
+        closeConfirm();
+
+        const { error } = await supabase
+          .from("events")
+          .update({ status: "archived" })
+          .eq("id", eventId)
+          .eq("creator_id", user.id);
+
+        if (error) {
+          console.error("Erro ao arquivar evento:", error);
+          showToast("Não foi possível arquivar o evento", "error");
+          return;
+        }
+
+        showToast("Evento arquivado");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      },
+    });
+  }
+
+  /* =========================
+     LOAD DASHBOARD
+  ========================== */
   useEffect(() => {
     let cancelled = false;
 
@@ -32,14 +190,16 @@ export default function OverviewPage() {
 
       const { data: events, error: eventsError } = await supabase
         .from("events")
-        .select("id, title, event_date, location, image_url, is_private")
+        .select("id, title, event_date, location, image_url, is_private, status")
         .eq("creator_id", creatorId)
+        .not("status", "eq", "archived")
         .order("event_date", { ascending: true });
 
       if (cancelled) return;
 
       if (eventsError) {
         console.error("Erro carregando eventos:", eventsError);
+        showToast("Erro ao carregar eventos", "error");
         setLoading(false);
         return;
       }
@@ -88,7 +248,6 @@ export default function OverviewPage() {
         checkinsCount: checkinsCount ?? 0,
       });
 
-      // métricas por evento
       const eventsMetrics = await Promise.all(
         events.map(async (ev) => {
           const [tRes, rRes, cRes] = await Promise.all([
@@ -163,14 +322,34 @@ export default function OverviewPage() {
           <EventPerformanceCard
             key={ev.id}
             event={ev}
-            onManage={() => navigate(`/dashboard/event/${ev.id}`)}  // ✅ rota provável correta
-            onEdit={() => navigate(`/create/form?edit=${ev.id}`)}
+            onManage={() => navigate(`/dashboard/event/${ev.id}`)}
+            onEdit={() => handleEditEvent(ev.id)}
+            onCancel={() => handleCancelEvent(ev.id)}
+            onDelete={() => handleDeleteEvent(ev.id)}
+            onArchive={() => handleArchiveEvent(ev.id)}
           />
         ))}
       </section>
+
+      {ToastComponent}
+
+      {confirmConfig && (
+        <ConfirmModal
+          open
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          danger={confirmConfig.danger}
+          onCancel={closeConfirm}
+          onConfirm={confirmConfig.onConfirm}
+        />
+      )}
     </div>
   );
 }
+
+/* =========================
+   COMPONENTES AUXILIARES
+========================== */
 
 function StatCard({ label, value }) {
   return (
@@ -181,7 +360,14 @@ function StatCard({ label, value }) {
   );
 }
 
-function EventPerformanceCard({ event, onManage, onEdit }) {
+function EventPerformanceCard({
+  event,
+  onManage,
+  onEdit,
+  onCancel,
+  onDelete,
+  onArchive,
+}) {
   const date = event.event_date
     ? new Date(event.event_date).toLocaleDateString("pt-BR")
     : "Sem data";
@@ -212,16 +398,28 @@ function EventPerformanceCard({ event, onManage, onEdit }) {
       </div>
 
       <div className="event-actions-row">
-        <button type="button" className="event-action-btn" onClick={onManage}>
-          Gerenciar evento
+        <button className="event-action-btn" onClick={onManage}>
+          Gerenciar
         </button>
 
-        <button
-          type="button"
-          className="event-action-btn secondary"
-          onClick={onEdit}
-        >
+        <button className="event-action-btn secondary" onClick={onEdit}>
           Editar
+        </button>
+
+        {event.status !== "cancelled" && (
+          <button className="event-action-btn danger" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
+
+        {["draft", "pending"].includes(event.status) && (
+          <button className="event-action-btn danger" onClick={onDelete}>
+            Deletar
+          </button>
+        )}
+
+        <button className="event-action-btn secondary" onClick={onArchive}>
+          Arquivar
         </button>
       </div>
     </div>

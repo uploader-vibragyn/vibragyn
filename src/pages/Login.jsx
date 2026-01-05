@@ -13,7 +13,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 🔑 ÚNICO redirect permitido após login
+  // ✅ USADO APENAS PARA EMAIL/SENHA
   function handlePostLoginRedirect() {
     const redirect = localStorage.getItem("postLoginRedirect");
 
@@ -21,9 +21,9 @@ export default function Login() {
       localStorage.removeItem("postLoginRedirect");
       navigate(redirect, { replace: true });
     }
-    // ⚠️ Se não existir redirect, NÃO navega para /
   }
 
+  // EMAIL / SENHA
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -36,7 +36,7 @@ export default function Login() {
         await signUp(email, password);
       }
 
-      handlePostLoginRedirect();
+      handlePostLoginRedirect(); // ✅ AQUI PODE
     } catch (err) {
       setError(err?.message || "Erro ao autenticar");
     } finally {
@@ -44,16 +44,18 @@ export default function Login() {
     }
   }
 
+  // 🔴 GOOGLE LOGIN — NÃO USA REDIRECT REACT
   async function handleGoogleLogin() {
     setLoading(true);
     setError(null);
 
     try {
       await signInWithGoogle();
-      handlePostLoginRedirect();
+      // ❌ NÃO chama handlePostLoginRedirect
+      // ❌ NÃO chama navigate
+      // OAuth vai redirecionar sozinho via redirectTo
     } catch (err) {
       setError(err?.message || "Erro ao autenticar com Google");
-    } finally {
       setLoading(false);
     }
   }
