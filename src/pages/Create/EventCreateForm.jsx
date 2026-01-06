@@ -207,6 +207,31 @@ useEffect(() => {
     return urlData?.publicUrl || null;
   }
 
+  const storedDraft = (() => {
+  try {
+    const raw = sessionStorage.getItem("vg_create_event_draft");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+})();
+
+const resolvedIsPublic =
+  state?.is_public ??
+  storedDraft?.is_public ??
+  true; // fallback seguro
+
+  const resolvedEventFormat =
+  state?.event_format ??
+  storedDraft?.event_format ??
+  "in_person"; // fallback seguro
+
+  const resolvedIsPaid =
+  state?.is_paid ??
+  storedDraft?.is_paid ??
+  false; // fallback seguro (gratuito só se nunca foi pago)
+
+
   async function goToReview() {
     if (isSaving) return;
     if (authLoading) return toast("Carregando sessão... tente de novo.");
@@ -238,10 +263,10 @@ useEffect(() => {
       category,
       location: locationField,
       online_url: onlineUrl,
-      price,
-      is_paid: !!state?.is_paid,
-      is_public: state?.is_public,
-      event_format: state?.event_format,
+      price: resolvedIsPaid ? price : null,
+      is_paid: resolvedIsPaid,
+      is_public: resolvedIsPublic,
+      event_format: resolvedEventFormat,
       image_url: finalImageUrl,
     };
     sessionStorage.setItem("vg_create_event_draft", JSON.stringify(draft));
@@ -268,6 +293,8 @@ useEffect(() => {
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
+
+      
 
       {/* 🔽 ÚNICA TROCA VISUAL/FUNCIONAL */}
       <div className={styles.card}>
