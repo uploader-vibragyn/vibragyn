@@ -1064,4 +1064,160 @@
 
   cursor: pointer;
 }
+.attendeesOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.attendeesModal {
+  background: #fff;
+  width: 90%;
+  max-width: 420px;
+  max-height: 80vh;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.attendeesTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.attendeesList {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.attendeeItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.attendeeAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.attendeeName {
+  font-size: 14px;
+}
+
+.closeButton {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: #f2f2f2;
+  font-weight: 600;
+}
+.avatarRow {
+  position: relative;
+  height: 36px;
+  margin-top: 8px;
+}
+
+.avatar {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ddd;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* =========================================
+   PATCH FINAL — IMAGEM DO POST DO USUÁRIO
+   Reduz para 50% do tamanho
+   ========================================= */
+
+/* imagem dentro do card de post */
+.postCard img {
+  width: 50%;
+  max-width: 50%;
+  height: auto;
+
+  display: block;
+  margin: 12px auto;
+
+  border-radius: 12px;
+}
+
+/* imagem em comentários (se houver) */
+.commentItem img {
+  width: 70%;
+  max-width: 70%;
+  height: auto;
+
+  display: block;
+  margin: 10px auto;
+
+  border-radius: 12px;
+}
+/* =========================================
+   BOTÃO COMPARTILHAR — PADRÃO MODERNO
+   ========================================= */
+
+.shareButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  background: #ff4fa3; /* rosa Vibra */
+  color: #fff;
+
+  border: none;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.shareButton:hover {
+  background: #e63f90;
+  transform: translateY(-1px);
+}
+
+.shareButton:active {
+  transform: scale(0.97);
+}
+/* imagem dentro do card de post */
+.postCard img {
+  width: 50%;
+  max-width: 50%;
+  height: auto;
+  display: block;
+  margin: 12px auto;
+  border-radius: 12px;
+}

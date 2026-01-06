@@ -10,8 +10,12 @@ export async function getUserRsvp(eventId) {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    return { data: null, error: authError || new Error("Usuário não autenticado") };
+    return {
+      data: null,
+      error: authError || new Error("Usuário não autenticado"),
+    };
   }
+
 
   const { data, error } = await supabase
     .from("rsvps")
@@ -58,7 +62,9 @@ export async function deleteRsvp(eventId) {
     error: authError,
   } = await supabase.auth.getUser();
 
-  if (authError || !user) return { error: authError };
+  if (authError || !user) {
+    return { error: authError };
+  }
 
   const { data, error } = await supabase
     .from("rsvps")
@@ -70,11 +76,11 @@ export async function deleteRsvp(eventId) {
 }
 
 /**
- * QUEM VAI (Partiful)
+ * QUEM VAI (padrão Partiful)
  *
  * Retorna:
  * {
- *   going: [ { id, name, avatar_url } ],
+ *   going: [ { id, name, avatar_url, initial } ],
  *   maybe: [ ... ],
  *   no:    [ ... ]
  * }
@@ -83,8 +89,8 @@ export async function getEventAttendance(eventId) {
   const { data: rows, error } = await supabase
     .from("rsvps")
     .select(`
-      user_id,
       status,
+      user_id,
       users:user_id (
         id,
         name,
@@ -93,21 +99,50 @@ export async function getEventAttendance(eventId) {
     `)
     .eq("event_id", eventId);
 
-  if (error) return { data: null, error };
+  if (error) {
+    console.error("Erro em getEventAttendance:", error);
+    return { data: null, error };
+  }
 
-  const groups = { going: [], maybe: [], no: [] };
+  const groups = {
+    going: [],
+    maybe: [],
+    no: [],
+  };
 
   for (const row of rows) {
-    const u = row.users || {};
+    const user = row.users;
+
+    // segurança total
+    if (!user || !user.id) continue;
+
+    const name = user.name || "Usuário";
+
+    const avatarUrl = user.avatar_url
+  ? user.avatar_url.startsWith("http")
+    ? user.avatar_url
+    : supabase
+        .storage
+        .from("avatars")
+        .getPublicUrl(user.avatar_url).data.publicUrl
+  : null;
+
+
+
     const attendee = {
-      id: u.id,
-      name: u.name || "Usuário",
-      avatar_url: u.avatar_url || null,
+      id: user.id,
+      name,
+      avatar_url: avatarUrl,
+      initial: name.charAt(0).toUpperCase(),
     };
 
-    if (row.status === "going") groups.going.push(attendee);
-    else if (row.status === "maybe") groups.maybe.push(attendee);
-    else if (row.status === "no") groups.no.push(attendee);
+    if (row.status === "going") {
+      groups.going.push(attendee);
+    } else if (row.status === "maybe") {
+      groups.maybe.push(attendee);
+    } else if (row.status === "no") {
+      groups.no.push(attendee);
+    }
   }
 
   return { data: groups, error: null };

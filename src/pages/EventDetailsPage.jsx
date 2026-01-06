@@ -29,6 +29,8 @@ export default function EventDetailsPage() {
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();
 
+  const [showAttendees, setShowAttendees] = useState(false);
+
 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -220,15 +222,6 @@ export default function EventDetailsPage() {
 
   const MAX_AVATARS = 5;
 
-  const organizerName = event.organizer_name || "Organizador";
-
-  const organizerAvatar = {
-    id: "organizer",
-    name: organizerName,
-    initial: organizerName.charAt(0).toUpperCase(),
-    isOrganizer: true,
-  };
-
   const slotsForGuests = Math.max(MAX_AVATARS - 1, 0);
 
   const slicedGuests = mergedAttendees.slice(0, slotsForGuests);
@@ -238,7 +231,8 @@ export default function EventDetailsPage() {
     0
   );
 
-  const avatarList = [organizerAvatar, ...slicedGuests];
+  const avatarList = slicedGuests;
+
 
   // -----------------------
   // RSVP
@@ -436,15 +430,37 @@ export default function EventDetailsPage() {
                 <span>❌ {noCount} não</span>
               </div>
 
-              <div className={styles.avatarRow}>
-                {avatarList.map((person, index) => (
+              <div
+                className={styles.avatarRow}
+                onClick={() => setShowAttendees(true)}
+                style={{ cursor: "pointer" }}
+              >
+
+                {avatarList.slice(0, 5).map((person, index) => (
                   <div
                     key={person.id ?? `attendee-${index}`}
                     className={styles.avatar}
                     title={person.name}
+                    style={{
+                      left: `${index * 18}px`,
+                      zIndex: 10 - index,
+                    }}
                   >
-                    {person.initial}
+                    {person.avatar_url ? (
+                      <img
+                        src={person.avatar_url}
+                        alt={person.name}
+                        className={styles.avatarImg}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <span>{person.initial}</span>
+                    )}
                   </div>
+
+
                 ))}
 
                 {remainingGuests > 0 && (
@@ -473,6 +489,56 @@ export default function EventDetailsPage() {
 
         <div className={styles.bottomSpacer} />
       </div>
+        {showAttendees && (
+        <div
+          className={styles.attendeesOverlay}
+          onClick={() => setShowAttendees(false)}
+        >
+          <div
+            className={styles.attendeesModal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className={styles.attendeesTitle}>
+              Quem vai ({attendance.going.length})
+            </h3>
+
+            <div className={styles.attendeesList}>
+              {attendance.going.map((person, index) => (
+                <div
+                  key={person.id ?? `attendee-${index}`}
+                  className={styles.attendeeItem}
+                >
+                  <div className={styles.attendeeAvatar}>
+                    {person.avatar_url ? (
+                      <img
+                        src={person.avatar_url}
+                        alt={person.name}
+                        className={styles.avatarImg}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <span>{person.initial}</span>
+                    )}
+                  </div>
+
+                  <span className={styles.attendeeName}>
+                    {person.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              className={styles.closeButton}
+              onClick={() => setShowAttendees(false)}
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
 
       {ToastComponent}
     </div>
