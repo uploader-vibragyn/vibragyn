@@ -240,6 +240,7 @@ const resolvedIsPublic =
     }
 
     const draft = {
+      event_id: state?.event_id ?? null,
       title,
       description,
       event_date: eventDate,

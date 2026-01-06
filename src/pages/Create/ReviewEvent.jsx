@@ -39,7 +39,7 @@ export default function ReviewEvent() {
   const payload = {
     title: state.title,
     description: state.description,
-    event_date: state.event_date,
+    event_date: localToUTC(state.event_date),
     category: state.category,
     event_format: state.event_format,
     location: state.location || null,
