@@ -35,7 +35,7 @@ export default function Navbar() {
           role="button"
           onClick={() => go("/feed")}
         >
-          VibraGyn
+          VibeCultural.com
         </span>
       </header>
 

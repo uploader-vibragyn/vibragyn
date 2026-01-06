@@ -11,7 +11,7 @@ export default function PublicTopBar() {
       </button>
 
       <button className={styles.brand} onClick={() => navigate("/")}>
-        VibraGyn
+        VibeCultural.com
       </button>
 
       <button className={styles.login} onClick={() => navigate("/login")}>
