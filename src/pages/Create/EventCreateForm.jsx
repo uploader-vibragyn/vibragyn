@@ -12,23 +12,6 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 /* 🔼 ADIÇÃO */
 
-function toDatetimeLocal(value) {
-  if (!value) return "";
-
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return "";
-
-  const pad = (n) => String(n).padStart(2, "0");
-
-  const yyyy = date.getFullYear();
-  const mm = pad(date.getMonth() + 1);
-  const dd = pad(date.getDate());
-  const hh = pad(date.getHours());
-  const min = pad(date.getMinutes());
-
-  return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-}
-
 function toast(msg) {
   const div = document.createElement("div");
   div.className = styles.toast;
@@ -79,7 +62,7 @@ export default function EventCreateForm() {
   setTitle(source.title || "");
   setDescription(source.description || "");
   if (source.event_date) {
-  setEventDate(toDatetimeLocal(source.event_date));
+  setEventDate(source.event_date);
 } else {
   const now = new Date();
   const formatted =
