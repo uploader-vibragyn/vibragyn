@@ -7,7 +7,60 @@ import PublicTopBar from "../components/PublicTopBar";
 import { useAuth } from "../auth/useAuth";
 import OnboardingCard from "../components/OnboardingCard";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 6;
+
+const CATEGORY_LABELS = {
+  all: "Todos",
+  party: "Festa",
+  show: "Show",
+  birthday: "Aniversário",
+  class: "Aulas & Cursos",
+  workshop: "Workshop",
+  sport: "Esporte",
+  art: "Arte",
+  culture: "Cultura",
+  teather: "Teatro",
+};
+
+
+/* 🔽 ADIÇÃO NECESSÁRIA — NORMALIZA DATA, HORA E LOCAL */
+function normalizeEvent(ev) {
+  let date_label = "";
+  let time_label = "";
+
+ if (ev.event_date) {
+  const d = new Date(ev.event_date);
+
+  date_label = d
+  .toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+  })
+  .replace("de ", "")   // remove o "de"
+  .replace(".", "");    // remove ponto do mês
+
+
+  time_label = d
+    .toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(":00", "h")
+    .replace(":", "h"); // transforma 16:00 → 16h | 16:30 → 16h30
+}
+
+
+  return {
+  ...ev,
+  date_label,
+  time_label,
+  venue_name: ev.location || "",
+  city: ev.city || "",
+
+  // 🔽 categoria traduzida para UI
+  category: CATEGORY_LABELS[ev.category] || ev.category,
+};
+}
 
 export default function HomePage() {
   const [events, setEvents] = useState([]);
@@ -64,11 +117,10 @@ export default function HomePage() {
 
       <div className={styles.contentWrapper}>
         {!user && (
-  <div className={styles.onboardingSlot}>
-    <OnboardingCard />
-  </div>
-)}
-
+          <div className={styles.onboardingSlot}>
+            <OnboardingCard />
+          </div>
+        )}
 
         {loading && (
           <p className={styles.info}>✨ Carregando sua vibe... ✨</p>
@@ -112,10 +164,8 @@ export default function HomePage() {
               className={styles.cardWrapper}
               style={{ animationDelay: `${index * 60}ms` }}
             >
-              <EventCard
-                event={ev}
-                onClick={() => navigate(`/event/${ev.id}`)}
-              />
+              {/* 🔽 ÚNICA MUDANÇA AQUI */}
+              <EventCard event={normalizeEvent(ev)} />
             </div>
           ))}
         </div>

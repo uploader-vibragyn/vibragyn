@@ -1,61 +1,62 @@
 import styles from "./EventCard.module.css";
+import { Link } from "react-router-dom";
 
-export default function EventCard({ event, onClick }) {
-  const isOnline = event.event_format === "online";
-  const isPaid = event.is_paid;
+export default function EventCard({ event }) {
+  const location =
+    event.venue_name && event.city
+      ? `${event.venue_name}, ${event.city}`
+      : event.city || event.venue_name || "";
 
-  // Formatação de data otimizada: "25 Dez 22:00"
-  const dateFormatted = event.event_date
-    ? new Date(event.event_date).toLocaleString("pt-BR", {
-        day: "numeric",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).replace(".", "") // Remove pontos de abreviação se houver
-        .replace(" de ", " ")
-    : "Data a definir";
-
-  const placeholder = "/placeholder-event.png";
+  const dateTime =
+    event.date_label && event.time_label
+      ? `${event.date_label} • ${event.time_label}`
+      : event.date_label || "";
 
   return (
-    <div className={styles.card} onClick={onClick}>
-      <div className={styles.imageWrapper}>
+    <Link to={`/event/${event.id}`} className={styles.card}>
+      <div className={styles.imageWrap}>
         <img
-          src={event.image_url || placeholder}
+          src={event.image_url}
           alt={event.title}
-          className={styles.image}
+          loading="lazy"
         />
       </div>
 
-      <div className={styles.content}>
-        {/* Tags de status em estilo Pill */}
-        <div className={styles.tagsRow}>
+      <div className={styles.body}>
+        <div className={styles.topLine}>
           {event.category && (
-            <span className={`${styles.tag} ${styles.tagCategory}`}>
+            <div className={styles.category}>
               {event.category}
-            </span>
+            </div>
           )}
-          <span className={styles.tag}>
-            {isOnline ? "🌐 Online" : "📍 Presencial"}
-          </span>
-          <span className={`${styles.tag} ${isPaid ? styles.tagPaid : ""}`}>
-            {isPaid ? `R$ ${event.price}` : "Gratuito"}
-          </span>
+
+          {event.is_paid && event.price ? (
+            <div className={styles.price}>
+              R$ {event.price}
+            </div>
+          ) : (
+            <div className={styles.price}>
+              Gratuito
+            </div>
+          )}
         </div>
 
-        {/* Título com tipografia Inter Bold */}
         <h3 className={styles.title}>{event.title}</h3>
 
-        {/* Informações de Local e Hora com cores da identidade */}
-        <div className={styles.infoGroup}>
-          <p className={styles.date}>{dateFormatted}</p>
-          {!isOnline && event.location_name && (
-            <p className={styles.location}>
-              <span className={styles.pinIcon}>📍</span> {event.location_name}
-            </p>
-          )}
-        </div>
+        {/* DATA E HORA — NÃO ESQUECIDO */}
+        {dateTime && (
+          <div className={styles.datetime}>
+            {dateTime}
+          </div>
+        )}
+
+        {/* LOCAL */}
+        {location && (
+          <div className={styles.location}>
+            {location}
+          </div>
+        )}
       </div>
-    </div>
+    </Link>
   );
 }
