@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import Button from "../../components/ui/Button";
 import styles from "./ReviewEvent.module.css";
-import { createEvent } from "../../supabase/events";
+import { supabase } from "../../supabase/client";
 import { useAuth } from "../../auth/useAuth";
 import { useToast } from "../../hooks/useToast";
 
@@ -30,35 +30,55 @@ export default function ReviewEvent() {
   }, [state, navigate]);
 
   async function publish() {
-    if (authLoading) return;
-    if (!user?.id) {
-      navigate("/login", { replace: true });
-      return;
-    }
+  if (authLoading) return;
+  if (!user?.id) {
+    navigate("/login", { replace: true });
+    return;
+  }
 
-    const payload = {
-      title: state.title,
-      description: state.description,
-      event_date: state.event_date,
-      category: state.category,
-      event_format: state.event_format,
-      location: state.location || null,
-      online_url: state.online_url || null,
-      image_url: state.image_url || null,
-      is_paid: !!state.is_paid,
-      price: state.is_paid ? Number(state.price) : null,
-      is_private: state.is_public === false,
+  const payload = {
+    title: state.title,
+    description: state.description,
+    event_date: state.event_date,
+    category: state.category,
+    event_format: state.event_format,
+    location: state.location || null,
+    online_url: state.online_url || null,
+    image_url: state.image_url || null,
+    is_paid: !!state.is_paid,
+    price: state.is_paid ? Number(state.price) : null,
+    is_private: state.is_public === false,
+  };
+
+  let error;
+
+ if (state.event_id) {
+    // 🔁 UPDATE
+    ({ error } = await supabase
+      .from("events")
+      .update(payload)
+      .eq("id", state.event_id)
+      .eq("creator_id", user.id));
+  } else {
+    // 🆕 CREATE
+    ({ error } = await supabase.from("events").insert({
+      ...payload,
       creator_id: user.id,
       status: "pending",
-    };
-
-    const { error } = await createEvent(payload);
-    if (error) return;
-
-    sessionStorage.removeItem("vg_create_event_draft");
-    showToast("Evento enviado para moderação ✨");
-    setTimeout(() => navigate("/"), 800);
+    }));
   }
+
+  if (error) {
+    showToast("Erro ao salvar evento");
+    return;
+  }
+
+  sessionStorage.removeItem("vg_create_event_draft");
+  showToast(state.event_id ? "Evento atualizado ✨" : "Evento criado ✨");
+
+  setTimeout(() => navigate("/"), 800);
+}
+
 
   if (!state) return null;
 
