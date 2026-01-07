@@ -30,16 +30,21 @@ export default function ReviewEvent() {
   }, [state, navigate]);
 
   async function publish() {
-  if (authLoading) return;
+  if (authLoading) {
+    showToast("Carregando sessão...");
+    return;
+  }
+
   if (!user?.id) {
     navigate("/login", { replace: true });
     return;
   }
 
+
   const payload = {
     title: state.title,
     description: state.description,
-    event_date: localToUTC(state.event_date),
+    event_date: state.event_date,
     category: state.category,
     event_format: state.event_format,
     location: state.location || null,

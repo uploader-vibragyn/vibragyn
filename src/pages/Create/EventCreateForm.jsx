@@ -26,6 +26,31 @@ function toast(msg) {
   }, 2300);
 }
 
+function toDatetimeLocal(value) {
+  if (!value) return "";
+
+  // já está no formato certo
+  if (typeof value === "string" && value.includes("T")) {
+    return value.slice(0, 16);
+  }
+
+  const date = new Date(value);
+  const pad = (n) => String(n).padStart(2, "0");
+
+  return (
+    date.getFullYear() +
+    "-" +
+    pad(date.getMonth() + 1) +
+    "-" +
+    pad(date.getDate()) +
+    "T" +
+    pad(date.getHours()) +
+    ":" +
+    pad(date.getMinutes())
+  );
+}
+
+
 export default function EventCreateForm() {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -62,8 +87,8 @@ export default function EventCreateForm() {
   setTitle(source.title || "");
   setDescription(source.description || "");
   if (source.event_date) {
-  setEventDate(source.event_date);
-} else {
+  setEventDate(toDatetimeLocal(source.event_date));
+}else {
   const now = new Date();
   const formatted =
     now.getFullYear() +

@@ -27,9 +27,16 @@ const CATEGORY_LABELS = {
 function normalizeEvent(ev) {
   let date_label = "";
   let time_label = "";
+  let weekday_label = "";
 
  if (ev.event_date) {
   const d = new Date(ev.event_date);
+  weekday_label = d.toLocaleDateString("pt-BR", {
+  weekday: "short",
+})
+.replace(".", "")        // remove ponto (sex.)
+.replace(/^./, c => c.toUpperCase()); // Primeira letra maiúscula
+
 
   date_label = d
   .toLocaleDateString("pt-BR", {
@@ -52,6 +59,7 @@ function normalizeEvent(ev) {
 
   return {
   ...ev,
+  weekday_label,
   date_label,
   time_label,
   venue_name: ev.location || "",

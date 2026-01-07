@@ -90,13 +90,37 @@
 /* DATA + HORA */
 .datetime {
   font-size: 12px;
-  font-weight: 600;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: #374151;
 }
+
+/* DIA DA SEMANA */
+.datetime strong {
+  font-weight: 800;
+  color: #ff2d8d; /* rosa da marca */
+}
+
 
 /* LOCAL */
 .location {
   font-size: 13px;
   font-weight: 600;
   color: #111827;
+}
+.weekday{
+  font-weight: 900;
+  color: var(--pink-600);
+  letter-spacing: .2px;
+}
+
+.date{
+  color: #6b7280;
+}
+
+.time{
+  color: #111827;
+  font-weight: 600;
 }
