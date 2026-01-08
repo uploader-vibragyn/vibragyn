@@ -43,29 +43,35 @@ export default function EventDetailsPage() {
   const [rsvpLoading, setRsvpLoading] = useState(false);
 
   const [attendance, setAttendance] = useState({
-    going: [],
-    maybe: [],
-    no: [],
-  });
+  going: [],
+  maybe: [],
+  no: [],
+});
 
-  const { showToast, ToastComponent } = useToast();
+const { showToast, ToastComponent } = useToast();
 
-  async function loadAttendance(eventId) {
-    try {
-      const { data } = await getEventAttendance(eventId);
-      if (data) {
-        setAttendance({
-          going: data.going || [],
-          maybe: data.maybe || [],
-          no: data.no || [],
-        });
-      }
-    } catch (e) {
-      console.error("Erro carregando attendance:", e);
+async function loadAttendance(eventId) {
+  try {
+    const { data, error } = await getEventAttendance(eventId);
+
+    if (error) {
+      console.error("Erro getEventAttendance:", error);
+      return;
     }
-  }
 
-  useEffect(() => {
+    if (data) {
+      setAttendance({
+        going: data.going || [],
+        maybe: data.maybe || [],
+        no: data.no || [],
+      });
+    }
+  } catch (e) {
+    console.error("Erro carregando attendance:", e);
+  }
+}
+
+useEffect(() => {
   if (
     !user &&
     !isLoading &&
@@ -78,12 +84,16 @@ export default function EventDetailsPage() {
   }
 }, [user, isLoading]);
 
-
-
- useEffect(() => {
+useEffect(() => {
   async function loadEvent() {
     try {
       setLoading(true);
+
+      // ✅ CHAMA ATTENDANCE AQUI (não depende de nada além do id)
+      await loadAttendance(id);
+
+      // ... daqui pra baixo continua exatamente como já está no seu arquivo
+
 
       // 1️⃣ BUSCA O EVENTO (UMA ÚNICA VEZ)
       const { data } = await getEventById(id);

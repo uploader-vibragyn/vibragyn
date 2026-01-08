@@ -39,15 +39,11 @@ export async function getEventById(id) {
 //
 
 export async function listPublicEvents() {
-  const now = new Date().toISOString();
-
+  // ✅ Fonte da verdade: VIEW já normaliza data + timezone + “hoje até 23:59”
   const { data, error } = await supabase
-    .from("events")
+    .from("public_events_feed")
     .select("*")
-    .eq("status", "approved")
-    .eq("is_private", false)
-    .gte("event_date", now)
-    .order("event_date", { ascending: true });
+    .order("event_local_at", { ascending: true });
 
   return { data, error };
 }

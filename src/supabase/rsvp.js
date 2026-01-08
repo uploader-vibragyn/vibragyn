@@ -16,7 +16,6 @@ export async function getUserRsvp(eventId) {
     };
   }
 
-
   const { data, error } = await supabase
     .from("rsvps")
     .select("*")
@@ -80,7 +79,7 @@ export async function deleteRsvp(eventId) {
  *
  * Retorna:
  * {
- *   going: [ { id, name, avatar_url, initial } ],
+ *   going: [ { id, name, avatar_url } ],
  *   maybe: [ ... ],
  *   no:    [ ... ]
  * }
@@ -88,15 +87,17 @@ export async function deleteRsvp(eventId) {
 export async function getEventAttendance(eventId) {
   const { data: rows, error } = await supabase
     .from("rsvps")
-    .select(`
+    .select(
+      `
       status,
       user_id,
-      users:user_id (
+      profiles:user_id (
         id,
         name,
         avatar_url
       )
-    `)
+    `
+    )
     .eq("event_id", eventId);
 
   if (error) {
@@ -110,39 +111,16 @@ export async function getEventAttendance(eventId) {
     no: [],
   };
 
-  for (const row of rows) {
-    const user = row.users;
-
-    // segurança total
-    if (!user || !user.id) continue;
-
-    const name = user.name || "Usuário";
-
-    const avatarUrl = user.avatar_url
-  ? user.avatar_url.startsWith("http")
-    ? user.avatar_url
-    : supabase
-        .storage
-        .from("avatars")
-        .getPublicUrl(user.avatar_url).data.publicUrl
-  : null;
-
-
-
-    const attendee = {
-      id: user.id,
-      name,
-      avatar_url: avatarUrl,
-      initial: name.charAt(0).toUpperCase(),
+  for (const row of rows || []) {
+    const user = {
+      id: row.user_id,
+      name: row.profiles?.name || "Usuário",
+      avatar_url: row.profiles?.avatar_url || null,
     };
 
-    if (row.status === "going") {
-      groups.going.push(attendee);
-    } else if (row.status === "maybe") {
-      groups.maybe.push(attendee);
-    } else if (row.status === "no") {
-      groups.no.push(attendee);
-    }
+    if (row.status === "going") groups.going.push(user);
+    if (row.status === "maybe") groups.maybe.push(user);
+    if (row.status === "no") groups.no.push(user);
   }
 
   return { data: groups, error: null };

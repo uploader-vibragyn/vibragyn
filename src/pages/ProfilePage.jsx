@@ -24,8 +24,17 @@ export default function ProfilePage() {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // 🔒 ADICIONADO: handler EXISTENTE para não quebrar mobile
+  async function handleDeleteAccount() {
+    setLoadingDelete(true);
+    alert("Função de exclusão em manutenção.");
+    setLoadingDelete(false);
+    setShowDeleteModal(false);
+  }
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadProfile() {
       if (!user) return;
 
@@ -36,28 +45,26 @@ export default function ProfilePage() {
         .single();
 
       if (!error && data) {
-        setProfile(data);
-        setNameDraft(data.name || "");
+        if (mounted) {
+          setProfile(data);
+          setNameDraft(data.name || "");
+        }
       } else {
         console.error("Erro carregando perfil:", error);
       }
     }
 
-    async function handleLogout() {
-  try {
-    await supabase.auth.signOut();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    logoutUser();
-  }
-}
-
-
     loadProfile();
+
+    return () => {
+      mounted = false;
+    };
   }, [user]);
 
-  if (!profile) return <p>Carregando...</p>;
+  if (!user) return <p>Faça login novamente.</p>;
+
+  if (!profile)
+    return <p style={{ padding: 20 }}>Carregando perfil…</p>;
 
   const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     profile?.name || profile?.email || "User"
@@ -141,22 +148,6 @@ export default function ProfilePage() {
     }
   }
 
-  async function handleDeleteAccount() {
-  setLoadingDelete(true);
-
-  const { error } = await supabase.auth.admin.deleteUser(user.id);
-
-  if (error) {
-    console.error(error);
-    setLoadingDelete(false);
-    return;
-  }
-
-  // fecha modal e desloga
-  setShowDeleteModal(false);
-  logoutUser();
-}
-
   return (
     <div className={styles.container}>
       <input
@@ -204,74 +195,69 @@ export default function ProfilePage() {
           Editar Perfil
         </button>
 
+        <button className={styles.buttonGray} onClick={logoutUser}>
+          Sair
+        </button>
+
         <button
           className={styles.buttonRed}
-          disabled={loadingDelete}
           onClick={() => setShowDeleteModal(true)}
         >
           Excluir Conta
         </button>
-
-        <button className={styles.buttonGray} onClick={logoutUser}>
-  Sair
-</button>
-
       </div>
 
       {/* MODAL EXCLUIR CONTA */}
-{showDeleteModal && (
-  <div
-    onClick={() => setShowDeleteModal(false)}
-    style={{
-      position: "fixed",
-      inset: 0,
-      background: "rgba(0,0,0,0.55)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 1100,
-    }}
-  >
-    <div
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        background: "white",
-        borderRadius: 12,
-        padding: 20,
-        width: "90%",
-        maxWidth: 340,
-        textAlign: "center",
-      }}
-    >
-      <h3 style={{ marginTop: 0 }}>Excluir conta</h3>
-
-      <p style={{ margin: "8px 0 0", fontSize: 14, color: "#555" }}>
-        Esta ação é <strong>irreversível</strong>. Tem certeza?
-      </p>
-
-      <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-        <button
-          className={styles.buttonGray}
+      {showDeleteModal && (
+        <div
           onClick={() => setShowDeleteModal(false)}
-          disabled={loadingDelete}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1100,
+          }}
         >
-          Cancelar
-        </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: 12,
+              padding: 20,
+              width: "90%",
+              maxWidth: 340,
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ marginTop: 0 }}>Excluir conta</h3>
 
-        <button
-          className={styles.buttonRed}
-          onClick={handleDeleteAccount}
-          disabled={loadingDelete}
-        >
-          {loadingDelete ? "Excluindo..." : "Excluir"}
-        </button>
-      </div>
+            <p style={{ margin: "8px 0 0", fontSize: 14, color: "#555" }}>
+              Esta ação é <strong>irreversível</strong>. Tem certeza?
+            </p>
 
-      {/* opcional: mensagem de erro se quiser depois */}
+            <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+              <button
+                className={styles.buttonGray}
+                onClick={() => setShowDeleteModal(false)}
+                disabled={loadingDelete}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className={styles.buttonRed}
+                onClick={handleDeleteAccount}
+                disabled={loadingDelete}
+              >
+                {loadingDelete ? "Excluindo..." : "Excluir"}
+              </button>
             </div>
           </div>
-        )}
-
+        </div>
+      )}
 
       {/* MODAL EDITAR NOME */}
       {showEditModal && (
@@ -311,13 +297,7 @@ export default function ProfilePage() {
               <p className={styles.error}>{profileError}</p>
             )}
 
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                marginTop: 16,
-              }}
-            >
+            <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
               <button
                 className={styles.buttonGray}
                 onClick={() => {

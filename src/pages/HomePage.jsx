@@ -7,6 +7,7 @@ import PublicTopBar from "../components/PublicTopBar";
 import { useAuth } from "../auth/useAuth";
 import OnboardingCard from "../components/OnboardingCard";
 
+
 const PAGE_SIZE = 6;
 
 const CATEGORY_LABELS = {
@@ -29,46 +30,79 @@ function normalizeEvent(ev) {
   let time_label = "";
   let weekday_label = "";
 
- if (ev.event_date) {
-  const d = new Date(ev.event_date);
-  weekday_label = d.toLocaleDateString("pt-BR", {
-  weekday: "short",
-})
-.replace(".", "")        // remove ponto (sex.)
-.replace(/^./, c => c.toUpperCase()); // Primeira letra maiúscula
+  if (ev.event_date) {
+    const d = new Date(ev.event_date);
 
+    weekday_label = d
+      .toLocaleDateString("pt-BR", { weekday: "short" })
+      .replace(".", "")
+      .replace(/^./, (c) => c.toUpperCase());
 
-  date_label = d
-  .toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "short",
-  })
-  .replace("de ", "")   // remove o "de"
-  .replace(".", "");    // remove ponto do mês
+    date_label = d
+      .toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "short",
+      })
+      .replace("de ", "")
+      .replace(".", "");
 
-
-  time_label = d
-    .toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-    .replace(":00", "h")
-    .replace(":", "h"); // transforma 16:00 → 16h | 16:30 → 16h30
-}
-
+    time_label = d
+      .toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .replace(":00", "h")
+      .replace(":", "h");
+  }
 
   return {
-  ...ev,
-  weekday_label,
-  date_label,
-  time_label,
-  venue_name: ev.location || "",
-  city: ev.city || "",
-
-  // 🔽 categoria traduzida para UI
-  category: CATEGORY_LABELS[ev.category] || ev.category,
-};
+    ...ev,
+    weekday_label,
+    date_label,
+    time_label,
+    venue_name: ev.location || "",
+    city: ev.city || "",
+    category: CATEGORY_LABELS[ev.category] || ev.category,
+  };
 }
+
+function isEventStillVisible(ev) {
+  if (!ev.event_date) return false;
+
+  // data do evento (UTC → Date)
+  const eventDate = new Date(ev.event_date);
+
+  // agora (local)
+  const now = new Date();
+
+  // fim do dia local de hoje (23:59:00)
+  const endOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    23,
+    59,
+    0,
+    0
+  );
+
+  // evento é visível se:
+  // - é hoje (local) OU
+  // - é no futuro
+  return eventDate <= endOfToday
+    ? eventDate >= new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0,
+        0,
+        0,
+        0
+      )
+    : true;
+}
+
+
 
 export default function HomePage() {
   const [events, setEvents] = useState([]);
@@ -95,12 +129,18 @@ export default function HomePage() {
 
   /* 🔽 filtro */
   const filteredEvents =
-    selectedCategory === "all"
-      ? events
-      : events.filter((ev) => ev.category === selectedCategory);
+  selectedCategory === "all"
+    ? events.filter(isEventStillVisible)
+    : events.filter(
+        (ev) =>
+          ev.category === selectedCategory &&
+          isEventStillVisible(ev)
+      );
+
 
   /* 🔽 eventos visíveis */
-  const visibleEvents = filteredEvents.slice(0, visibleCount);
+  const visibleEvents = events;
+
 
   /* 🔽 infinite scroll */
   useEffect(() => {
