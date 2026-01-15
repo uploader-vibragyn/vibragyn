@@ -133,13 +133,20 @@ export default function HomePage() {
     ? events.filter(isEventStillVisible)
     : events.filter(
         (ev) =>
-          ev.category === selectedCategory &&
+          (String(ev.category || "").trim().toLowerCase() === String(selectedCategory).trim().toLowerCase()) &&
           isEventStillVisible(ev)
       );
 
 
+      /* 🔽 resetar scroll infinito ao trocar filtro */
+      useEffect(() => {
+        setVisibleCount(PAGE_SIZE);
+      }, [selectedCategory]);
+
+
+
   /* 🔽 eventos visíveis */
-  const visibleEvents = events;
+  const visibleEvents = filteredEvents.slice(0, visibleCount);
 
 
   /* 🔽 infinite scroll */
@@ -147,13 +154,18 @@ export default function HomePage() {
     if (!loadMoreRef.current) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => prev + PAGE_SIZE);
-        }
-      },
-      { threshold: 1 }
-    );
+  (entries) => {
+    if (entries[0].isIntersecting) {
+      setVisibleCount((prev) => prev + PAGE_SIZE);
+    }
+  },
+  {
+    root: null,
+    rootMargin: "200px",
+    threshold: 0,
+  }
+);
+
 
     observer.observe(loadMoreRef.current);
     return () => observer.disconnect();
