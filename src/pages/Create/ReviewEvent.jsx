@@ -16,18 +16,26 @@ export default function ReviewEvent() {
   const { showToast, ToastComponent } = useToast();
 
   const state = useMemo(() => {
-    if (location.state) return location.state;
-    try {
-      const raw = sessionStorage.getItem("vg_create_event_draft");
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  }, [location.state]);
+  let data = null;
+
+  try {
+    const raw = sessionStorage.getItem("vg_create_event_draft");
+    if (raw) data = JSON.parse(raw);
+  } catch {}
+
+  if (location.state) {
+    data = { ...data, ...location.state };
+  }
+
+  return data;
+}, [location.state]);
+
 
   useEffect(() => {
-    if (!state) navigate("/create/visibility", { replace: true });
-  }, [state, navigate]);
+  if (!state) {
+    navigate("/create/visibility", { replace: true });
+  }
+}, [state, navigate]);
 
   async function publish() {
   if (authLoading) {
@@ -40,6 +48,7 @@ export default function ReviewEvent() {
     return;
   }
 
+  const eventId = state?.event_id ?? state?.id ?? null;
 
   const payload = {
     title: state.title,
@@ -57,15 +66,13 @@ export default function ReviewEvent() {
 
   let error;
 
- if (state.event_id) {
-    // 🔁 UPDATE
+  if (eventId) {
     ({ error } = await supabase
       .from("events")
       .update(payload)
-      .eq("id", state.event_id)
+      .eq("id", eventId)
       .eq("creator_id", user.id));
   } else {
-    // 🆕 CREATE
     ({ error } = await supabase.from("events").insert({
       ...payload,
       creator_id: user.id,
@@ -79,10 +86,10 @@ export default function ReviewEvent() {
   }
 
   sessionStorage.removeItem("vg_create_event_draft");
-  showToast(state.event_id ? "Evento atualizado ✨" : "Evento criado ✨");
-
+  showToast(eventId ? "Evento atualizado ✨" : "Evento criado ✨");
   setTimeout(() => navigate("/"), 800);
 }
+
 
 
   if (!state) return null;

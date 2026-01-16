@@ -72,7 +72,13 @@ export default function OverviewPage() {
 
 
 
-    navigate("/create/form");
+    navigate("/create/form", {
+  state: {
+    id: data.id, // 🔑 ISSO É O QUE DESTRAVA TUDO
+    fromDashboardEdit: true,
+  },
+});
+
   }
 
   /* =========================
